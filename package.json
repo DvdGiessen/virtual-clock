@@ -1,6 +1,6 @@
 {
   "name": "virtual-clock",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A virtual clock implementation in JavaScript",
   "author": "Daniël van de Giessen",
   "license": "MIT",
