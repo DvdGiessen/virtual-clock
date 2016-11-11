@@ -18,7 +18,7 @@ export default class VirtualClock {
     constructor() {
         // Determine method for retrieving now
         this._now =
-            (typeof performance !== 'undefined' && /*global performance */ performance.now) ||
+            (typeof performance !== 'undefined' && /*global performance */ performance.now.bind(performance)) ||
             (typeof process !== 'undefined' && /*global process */ process.hrtime && (() => { let now = process.hrtime(); return now[0] * 1e3 + now[1] / 1e6; })) ||
             Date.now ||
             (() => { return new Date().getTime(); });
