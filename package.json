@@ -1,0 +1,48 @@
+{
+  "name": "virtual-clock",
+  "version": "1.0.0",
+  "description": "A virtual clock implementation in JavaScript",
+  "author": "Daniël van de Giessen",
+  "license": "MIT",
+  "homepage": "https://github.com/DvdGiessen/virtual-clock#readme",
+  "bugs": {
+    "url": "https://github.com/DvdGiessen/virtual-clock/issues"
+  },
+  "keywords": [
+    "virtual",
+    "clock",
+    "time",
+    "timer",
+    "stopwatch",
+    "timeout",
+    "settimout",
+    "setinterval"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DvdGiessen/virtual-clock.git"
+  },
+  "main": "dist/virtual-clock.js",
+  "scripts": {
+    "lint": "eslint src/**",
+    "flow": "flow",
+    "build": "babel src --out-dir dist --source-maps --plugins transform-es2015-modules-umd",
+    "test": "mocha --compilers js:babel-core/register --ui tdd test",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.0",
+    "babel-plugin-transform-es2015-modules-umd": "^6.18.0",
+    "babel-plugin-transform-flow-strip-types": "^6.18.0",
+    "babel-preset-latest": "^6.16.0",
+    "chai": "^3.5.0",
+    "eslint": "^3.9.1",
+    "eslint-plugin-flowtype": "^2.25.0",
+    "flow-bin": "^0.34.0",
+    "lolex": "^1.5.1",
+    "mocha": "^3.1.2",
+    "sinon": "^1.17.6"
+  }
+}
