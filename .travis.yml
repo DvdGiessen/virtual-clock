@@ -9,9 +9,8 @@ install:
   - npm install -g codecov
   - npm install
 script:
-  - npm test
   - npm run lint
   - npm run flow
+  - npm test
 after_success:
-  - npm run cover
   - codecov

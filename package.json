@@ -27,8 +27,7 @@
     "lint": "eslint src/**",
     "flow": "flow",
     "build": "babel src --out-dir dist --source-maps --plugins transform-es2015-modules-umd",
-    "test": "mocha --compilers js:babel-core/register --ui tdd",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --ui tdd",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --ui tdd",
     "prepublish": "npm run build"
   },
   "devDependencies": {

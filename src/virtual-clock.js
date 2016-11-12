@@ -11,7 +11,7 @@ export default class VirtualClock {
     _loop: boolean;
     _eventListeners: Map<string, Function[]>;
     _timeListeners: Map<[number, Function], [number, number, boolean]>;
-    
+
     /**
      * Constructs a stopped clock with default settings.
      */
@@ -19,10 +19,14 @@ export default class VirtualClock {
         // Determine method for retrieving now
         this._now =
             (typeof performance !== 'undefined' && /*global performance */ performance.now.bind(performance)) ||
-            (typeof process !== 'undefined' && /*global process */ process.hrtime && (() => { let now = process.hrtime(); return now[0] * 1e3 + now[1] / 1e6; })) ||
+            (typeof process !== 'undefined' && /*global process */ process.hrtime && (() => {
+                let now = process.hrtime();
+                return now[0] * 1e3 + now[1] / 1e6;
+            })) ||
             Date.now ||
-            (() => { return new Date().getTime(); });
-        
+            (() => { return new Date().getTime(); })
+        ;
+
         // Current state
         this._previousTime = 0;
         this._previousNow = this._now();
@@ -39,7 +43,7 @@ export default class VirtualClock {
         // Event and time listeners
         this._eventListeners = new Map();
         this._timeListeners = new Map();
-        
+
         // Make private properties non-enumerable
         for(let prop in this) {
             if(prop.startsWith('_')) {
@@ -61,10 +65,8 @@ export default class VirtualClock {
 
             // Trigger event listeners
             this.trigger('start');
+            this.trigger('setrunning');
         }
-
-        // Trigger setrunning listeners
-        this.trigger('setrunning');
 
         // Method chaining
         return this;
@@ -82,10 +84,8 @@ export default class VirtualClock {
 
             // Trigger event listeners
             this.trigger('stop');
+            this.trigger('setrunning');
         }
-
-        // Trigger setrunning listeners
-        this.trigger('setrunning');
 
         // Method chaining
         return this;
@@ -168,7 +168,7 @@ export default class VirtualClock {
             clearTimeout(timeoutId);
 
             // Only add timeouts if we're running and the time is reachable
-            if(this._running && this._rate != 0 && time >= this._minimum && time <= this._maximum) {
+            if(this._running && this._rate !== 0 && time >= this._minimum && time <= this._maximum) {
                 // Get current time
                 let currentTime = this.time;
 
@@ -238,26 +238,36 @@ export default class VirtualClock {
      * Attaches a time listener which fires once after the specified clock time has passed.
      */
     onceAt(time: number, callback: Function): VirtualClock {
+        // Do not allow setting an invalid value
+        if(isNaN(time) || time === -Infinity || time === Infinity) {
+            throw new Error('Can only set time to a finite number');
+        }
+
         let listener = [time, callback];
         this._timeListeners.set(listener, [0, NaN, true]);
         this._recalculateTimeListener(listener);
-        
+
         // Method chaining
         return this;
     }
-    
+
     /**
      * Attaches a time listener which fires every time the specified clock time has passed.
      */
     alwaysAt(time: number, callback: Function): VirtualClock {
+        // Do not allow setting an invalid value
+        if(isNaN(time) || time === -Infinity || time === Infinity) {
+            throw new Error('Can only set time to a finite number');
+        }
+
         let listener = [time, callback];
         this._timeListeners.set(listener, [0, NaN, false]);
         this._recalculateTimeListener(listener);
-        
+
         // Method chaining
         return this;
     }
-    
+
     /**
      * Detaches a previously attached time listener.
      */
@@ -265,13 +275,13 @@ export default class VirtualClock {
         // Loop over all listeners
         for(let listener of this._timeListeners.keys()) {
             let [listenerTime, listenerCallback] = listener;
-            
+
             // If the listener matches, delete it
             if(listenerTime === time && listenerCallback === callback) {
                 this._timeListeners.delete(listener);
             }
         }
-        
+
         // Method chaining
         return this;
     }
@@ -298,8 +308,8 @@ export default class VirtualClock {
                     currentTime += (this._maximum - this._minimum);
                 } while(currentTime < this._minimum);
             } else {
-                // Performance: If the minimum is zero, just calculate our current position in the loop by modulo
-                if(this._minimum == 0) {
+                // Performance: If the minimum is zero, just calculate using modulo
+                if(this._minimum === 0) {
                     currentTime %= this._maximum;
                 } else {
                     // Substract until we're between bounds again
@@ -356,17 +366,36 @@ export default class VirtualClock {
      * Sets the current clock time.
      */
     set time(time: number) {
-        // Recalibrate by setting both correct time and now
-        this._previousTime = Math.min(Math.max(this._minimum, time), this._maximum);
-        this._previousNow = this._now();
+        // Do not allow setting an invalid value
+        if(isNaN(time) || time === -Infinity || time === Infinity) {
+            throw new Error('Can only set time to a finite number');
+        }
 
-        // Recalculate time listeners
-        this._recalculateTimeListeners();
+        // Only act if the time is different
+        // Note: If time is changing, it is always assumed to be different
+        let currentTime = this.time;
+        if(
+            !(
+                !this._running ||
+                this._rate === 0.0 ||
+                !this._loop && (
+                    this._rate < 0 && currentTime === this._minimum ||
+                    this._rate > 0 && currentTime === this._maximum
+                )
+            ) || (time !== currentTime)
+        ) {
+            // Recalibrate by setting both correct time and now
+            this._previousTime = Math.min(Math.max(this._minimum, time), this._maximum);
+            this._previousNow = this._now();
 
-        // Trigger event listeners
-        this.trigger('settime');
+            // Recalculate time listeners
+            this._recalculateTimeListeners();
+
+            // Trigger event listeners
+            this.trigger('settime');
+        }
     }
-    
+
     /**
      * Starts or stops running the clock.
      */
@@ -374,94 +403,111 @@ export default class VirtualClock {
         // Changing running state just calls start() or stop()
         running ? this.start() : this.stop();
     }
-    
+
     /**
      * Sets the rate (relative to real time) at which the clock runs.
      */
     set rate(rate: number) {
-        // Recalibration is only needed when we're running
-        if(this._running) {
-            this._previousTime = this.time;
-            this._previousNow = this._now();
+        // Do not allow setting an invalid value
+        if(isNaN(rate) || rate === -Infinity || rate === Infinity) {
+            throw new Error('Can only set rate to a finite number');
         }
 
-        // Set rate
-        this._rate = rate;
+        // Only act if the rate is different
+        if(rate !== this._rate) {
+            // Recalibration is only needed when we're running
+            if(this._running) {
+                this._previousTime = this.time;
+                this._previousNow = this._now();
+            }
 
-        // Recalculate time listeners
-        this._recalculateTimeListeners();
+            // Set rate
+            this._rate = rate;
 
-        // Trigger event listeners
-        this.trigger('setrate');
+            // Recalculate time listeners
+            this._recalculateTimeListeners();
+
+            // Trigger event listeners
+            this.trigger('setrate');
+        }
     }
-    
+
     /**
      * Sets minimum limit for time on the clock.
      */
     set minimum(minimum: number) {
-        // First get the calculated time, calculated using the old minimum
-        let previousTime = this.time;
-        
-        // Do not allow setting a minimum above the maximum
-        if(minimum > this._maximum || minimum == Infinity) {
+        // Do not allow setting an invalid value
+        if(minimum > this._maximum || isNaN(minimum) || minimum === Infinity) {
             throw new Error('Cannot set minimum above maximum');
         }
 
-        // Change the minimum
-        this._minimum = minimum;
+        // Only act if the minimum is different
+        if(minimum !== this._minimum) {
+            // First get the calculated time, calculated using the old minimum
+            let previousTime = this.time;
 
-        // Recalibrate the time using the previous value and the new minimum
-        this._previousTime = Math.min(Math.max(this._minimum, previousTime), this._maximum);
-        this._previousNow = this._now();
+            // Change the minimum
+            this._minimum = minimum;
 
-        // Recalculate time listeners
-        this._recalculateTimeListeners();
+            // Recalibrate the time using the previous value and the new minimum
+            this._previousTime = Math.min(Math.max(this._minimum, previousTime), this._maximum);
+            this._previousNow = this._now();
 
-        // Trigger event listeners
-        this.trigger('setminimum');
+            // Recalculate time listeners
+            this._recalculateTimeListeners();
+
+            // Trigger event listeners
+            this.trigger('setminimum');
+        }
     }
-    
+
     /**
      * Sets maximum limit for time on the clock.
      */
     set maximum(maximum: number) {
-        // First get the calculated time, calculated using the old maximum
-        let previousTime = this.time;
-        
-        // Do not allow setting a maximum below the minimum
-        if(maximum < this._minimum || maximum == -Infinity) {
+        // Do not allow setting an invalid value
+        if(maximum < this._minimum || isNaN(maximum) || maximum === -Infinity) {
             throw new Error('Cannot set maximum below minimum');
         }
 
-        // Change the maximum
-        this._maximum = maximum;
+        // Only act if the maximum is different
+        if(maximum !== this._maximum) {
+            // First get the calculated time, calculated using the old maximum
+            let previousTime = this.time;
 
-        // Recalibrate the time using the previous value and the new maximum
-        this._previousTime = Math.min(Math.max(this._minimum, previousTime), this._maximum);
-        this._previousNow = this._now();
+            // Change the maximum
+            this._maximum = maximum;
 
-        // Recalculate time listeners
-        this._recalculateTimeListeners();
+            // Recalibrate the time using the previous value and the new maximum
+            this._previousTime = Math.min(Math.max(this._minimum, previousTime), this._maximum);
+            this._previousNow = this._now();
 
-        // Trigger event listeners
-        this.trigger('setmaximum');
+            // Recalculate time listeners
+            this._recalculateTimeListeners();
+
+            // Trigger event listeners
+            this.trigger('setmaximum');
+        }
     }
 
     /**
      * Sets whether the clock loops around after reaching the maximum.
      */
     set loop(loop: boolean) {
-        // Recalibrate
-        this._previousTime = this.time;
-        this._previousNow = this._now();
+        // Only act if looping is different
+        if(loop !== this._loop) {
+            // Recalibrate
+            this._previousTime = this.time;
+            this._previousNow = this._now();
 
-        // Set looping
-        this._loop = loop;
+            // Set looping
+            this._loop = loop;
 
-        // Recalculate time listeners
-        this._recalculateTimeListeners();
+            // Recalculate time listeners
+            this._recalculateTimeListeners();
 
-        // Trigger event listeners
-        this.trigger('setloop');
+            // Trigger event listeners
+            this.trigger('setloop');
+        }
     }
 }
