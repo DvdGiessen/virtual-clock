@@ -1,6 +1,12 @@
 # virtual-clock
 *A high-resolution, virtual clock with timer support*
 
+[![Travis CI](https://travis-ci.org/DvdGiessen/virtual-clock.svg?branch=master)](https://travis-ci.org/DvdGiessen/virtual-clock)
+[![Codecov](https://codecov.io/gh/DvdGiessen/virtual-clock/branch/master/graph/badge.svg)](https://codecov.io/gh/DvdGiessen/virtual-clock)
+[![Codacy](https://api.codacy.com/project/badge/Grade/bae573f4dab14b01af199ad21c810318)](https://www.codacy.com/app/github_94/virtual-clock)
+[![dependencies](https://david-dm.org/DvdGiessen/virtual-clock/status.svg)](https://david-dm.org/DvdGiessen/virtual-clock)
+[![devDependencies](https://david-dm.org/DvdGiessen/virtual-clock/dev-status.svg)](https://david-dm.org/DvdGiessen/virtual-clock?type=dev)
+
 ## Overview
 This project provides a small library for working with virtual clocks which can
 be used for tracking the passage of virtualized time. Clocks can be started and
