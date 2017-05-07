@@ -289,7 +289,7 @@ suite('VirtualClock', () => {
         test('At instanciation looping is disabled', () => {
             assert.equal(clock.loop, false);
         });
-        test('Passing maximum makes clock loop and start from minimum', () => {
+        test('Forwards running clock jumps from maximum to minimum', () => {
             clock.loop = true;
             assert.equal(clock.loop, true);
             clock.minimum = -100;
@@ -300,6 +300,10 @@ suite('VirtualClock', () => {
             assert.equal(clock.time, 400);
             fakeTime.tick(400);
             assert.equal(clock.time, 200);
+            fakeTime.tick(350);
+            assert.equal(clock.time, -50);
+            fakeTime.tick(625);
+            assert.equal(clock.time, -25);
         });
         test('When looping, the maximum is never returned but the minimum is returned instead', () => {
             clock.minimum = -100;
@@ -365,6 +369,8 @@ suite('VirtualClock', () => {
             assert.equal(clock.time, -100);
             fakeTime.tick(150);
             assert.equal(clock.time, 350);
+            fakeTime.tick(925);
+            assert.equal(clock.time, 25);
         });
         test('Clock does not loop without a minimum', () => {
             clock.maximum = 300;
