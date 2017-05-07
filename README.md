@@ -16,6 +16,15 @@ value, and when both a minimum and maximum are defined time may be set to loop
 around. Time listeners may be attached which will fire when a given (absolute)
 time on the clock is passed.
 
+`virtual-clock` differs from other libraries by using high resolution time data
+to calculate its current clock time, independent of system clock drift (which
+might be adjusted manually or skewed by software like NTP). Apart from the time
+listeners functionality it doesn't use any form of timers, instead calculating
+the current clock time whenever it is requested. The library is optimized for
+performance, has extensive test coverage for all functionality and edge cases,
+and is fully compatible with both browser and Node.js environments.
+
+
 ## Usage example
 ```js
 import VirtualClock from 'virtual-clock';
@@ -71,4 +80,7 @@ clock.alwaysAt(5 * 1000, () => {
     console.log('I\'ll fire every time the clock is at 5!');
 });
 
+// We can keep adjusting properties; time listeners will fire as expected
+clock.minimum += 1000;
+clock.rate *= 2;
 ```
