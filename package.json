@@ -28,22 +28,22 @@
     "flow": "flow",
     "build": "babel src --out-dir dist --source-maps --plugins transform-es2015-modules-umd",
     "test": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --ui tdd",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-core": "^6.18.2",
-    "babel-eslint": "^7.1.0",
-    "babel-plugin-transform-es2015-modules-umd": "^6.18.0",
-    "babel-plugin-transform-flow-strip-types": "^6.18.0",
-    "babel-preset-latest": "^6.16.0",
+    "babel-cli": "^6.24.1",
+    "babel-core": "^6.24.1",
+    "babel-eslint": "^7.2.3",
+    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-preset-latest": "^6.24.1",
     "chai": "^3.5.0",
-    "eslint": "^3.9.1",
-    "eslint-plugin-flowtype": "^2.25.0",
-    "flow-bin": "^0.35.0",
+    "eslint": "^3.19.0",
+    "eslint-plugin-flowtype": "^2.32.1",
+    "flow-bin": "^0.45.0",
     "istanbul": "^1.1.0-alpha.1",
-    "lolex": "^1.5.1",
-    "mocha": "^3.1.2",
-    "sinon": "^1.17.6"
+    "lolex": "^1.6.0",
+    "mocha": "^3.3.0",
+    "sinon": "^2.2.0"
   }
 }
