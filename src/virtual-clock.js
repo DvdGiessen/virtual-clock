@@ -301,23 +301,8 @@ export default class VirtualClock {
 
         // Can we loop (loop enabled + a non-zero non-finite maximum)
         if(this._loop && this._minimum > -Infinity && this._maximum < Infinity) {
-            // Is the time below the minimum (meaning we are looping backwards)
-            if(currentTime < this._minimum) {
-                // Append until we're between bounds again
-                do {
-                    currentTime += (this._maximum - this._minimum);
-                } while(currentTime < this._minimum);
-            } else {
-                // Performance: If the minimum is zero, just calculate using modulo
-                if(this._minimum === 0) {
-                    currentTime %= this._maximum;
-                } else {
-                    // Substract until we're between bounds again
-                    while(currentTime >= this._maximum) {
-                        currentTime -= (this._maximum - this._minimum);
-                    }
-                }
-            }
+            // Calculate using modulo, adjusting for the minimum
+            currentTime = ((currentTime - this._minimum) % (this._maximum - this._minimum) + (this._maximum - this._minimum)) % (this._maximum - this._minimum) + this._minimum;
         } else {
             // No looping means we just limit our output between minimum and maximum
             currentTime = Math.min(Math.max(this._minimum, currentTime), this._maximum);
