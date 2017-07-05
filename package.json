@@ -24,11 +24,12 @@
   },
   "main": "dist/virtual-clock.js",
   "scripts": {
-    "lint": "eslint src/**",
-    "flow": "flow",
     "build": "babel src --out-dir dist --source-maps --plugins transform-es2015-modules-umd",
-    "test": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --ui tdd",
-    "prepare": "npm run build"
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- --compilers js:babel-core/register --ui tdd",
+    "flow": "flow",
+    "lint": "eslint src/**",
+    "prepare": "npm run build",
+    "test": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly -- --compilers js:babel-core/register --ui tdd"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
@@ -39,11 +40,11 @@
     "babel-preset-latest": "^6.24.1",
     "chai": "^4.0.2",
     "eslint": "^4.1.1",
-    "eslint-plugin-flowtype": "^2.34.0",
-    "flow-bin": "^0.48.0",
+    "eslint-plugin-flowtype": "^2.34.1",
+    "flow-bin": "^0.49.1",
     "istanbul": "^1.1.0-alpha.1",
     "lolex": "^1.6.0",
     "mocha": "^3.4.2",
-    "sinon": "^2.3.5"
+    "sinon": "^2.3.6"
   }
 }
