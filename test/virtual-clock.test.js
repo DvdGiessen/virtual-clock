@@ -474,6 +474,34 @@ suite('VirtualClock', () => {
             clock.time = -500;
             assert(callback.calledThrice);
         });
+        test('Event listener for multiple events gets fired for all of them', () => {
+            let callback = sinon.spy();
+            clock.on('start', callback);
+            clock.on('settime', callback);
+            clock.on('stop', callback);
+            assert(!callback.called);
+            clock.start();
+            assert(callback.calledOnce);
+            clock.time = 500;
+            assert(callback.calledTwice);
+            clock.stop();
+            assert(callback.calledThrice);
+        });
+        test('Multiple event listener for a single event all get fired', () => {
+            let callbackOne = sinon.spy();
+            let callbackTwo = sinon.spy();
+            let callbackThree = sinon.spy();
+            clock.on('settime', callbackOne);
+            clock.on('settime', callbackTwo);
+            clock.on('settime', callbackThree);
+            assert(!callbackOne.called);
+            assert(!callbackTwo.called);
+            assert(!callbackThree.called);
+            clock.time = 500;
+            assert(callbackOne.calledOnce);
+            assert(callbackTwo.calledOnce);
+            assert(callbackThree.calledOnce);
+        });
         test('Event listener for "setrunning" fires when running is set to different value', () => {
             let callback = sinon.spy();
             clock.on('setrunning', callback);
@@ -559,6 +587,15 @@ suite('VirtualClock', () => {
             assert(!callback.called);
             fakeTime.tick(1);
             assert(callback.calledOnce);
+        });
+        test('Single-fire time listener can only be bound to a finite time', () => {
+            let callback = sinon.spy();
+            assert.throws(() => {
+                return clock.onceAt(Infinity, callback);
+            });
+            assert.throws(() => {
+                return clock.onceAt(-Infinity, callback);
+            });
         });
         test('Single-fire time listener correctly interacts with setting time', () => {
             let callback = sinon.spy();
@@ -713,6 +750,15 @@ suite('VirtualClock', () => {
             assert(!callback.called);
             fakeTime.tick(1);
             assert(callback.calledOnce);
+        });
+        test('Always-fire time listener can only be bound to a finite time', () => {
+            let callback = sinon.spy();
+            assert.throws(() => {
+                return clock.alwaysAt(Infinity, callback);
+            });
+            assert.throws(() => {
+                return clock.alwaysAt(-Infinity, callback);
+            });
         });
         test('Always-fire time listener correctly interacts with setting time', () => {
             let callback = sinon.spy();
