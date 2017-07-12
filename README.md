@@ -1,5 +1,5 @@
 # virtual-clock
-*A high-resolution, virtual clock with timer support*
+*A high-resolution, high-performance virtual clock supporting timed events*
 
 [![Travis CI](https://travis-ci.org/DvdGiessen/virtual-clock.svg?branch=master)](https://travis-ci.org/DvdGiessen/virtual-clock)
 [![Codecov](https://codecov.io/gh/DvdGiessen/virtual-clock/branch/master/graph/badge.svg)](https://codecov.io/gh/DvdGiessen/virtual-clock)
@@ -28,6 +28,8 @@ and is fully compatible with both browser and Node.js environments.
 ## Usage example
 ```js
 import VirtualClock from 'virtual-clock';
+// or
+const VirtualClock = require('virtual-clock').default;
 
 // Create a new clock
 let clock = new VirtualClock;

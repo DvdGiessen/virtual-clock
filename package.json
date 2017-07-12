@@ -1,7 +1,7 @@
 {
   "name": "virtual-clock",
   "version": "1.0.3",
-  "description": "A virtual clock implementation in JavaScript",
+  "description": "A high-resolution, high-performance virtual clock supporting timed events",
   "author": "Daniël van de Giessen",
   "license": "MIT",
   "homepage": "https://github.com/DvdGiessen/virtual-clock#readme",
@@ -13,8 +13,12 @@
     "clock",
     "time",
     "timer",
+    "timing",
     "stopwatch",
     "timeout",
+    "interval",
+    "duration",
+    "event",
     "settimout",
     "setinterval"
   ],
@@ -38,13 +42,13 @@
     "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
     "babel-plugin-transform-flow-strip-types": "^6.22.0",
     "babel-preset-latest": "^6.24.1",
-    "chai": "^4.0.2",
-    "eslint": "^4.1.1",
-    "eslint-plugin-flowtype": "^2.34.1",
+    "chai": "^4.1.0",
+    "eslint": "^4.2.0",
+    "eslint-plugin-flowtype": "^2.35.0",
     "flow-bin": "^0.49.1",
     "istanbul": "^1.1.0-alpha.1",
     "lolex": "^1.6.0",
     "mocha": "^3.4.2",
-    "sinon": "^2.3.6"
+    "sinon": "^2.3.7"
   }
 }
