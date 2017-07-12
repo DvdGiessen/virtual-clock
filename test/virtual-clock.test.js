@@ -222,6 +222,8 @@ suite('VirtualClock', () => {
             clock.minimum = -100;
             clock.time = -200;
             assert.equal(clock.time, -100);
+            clock.time = -100;
+            assert.equal(clock.time, -100);
         });
         test('Setting minimum when time is before minimum resets time to minimum', () => {
             clock.time = 100;
@@ -262,6 +264,8 @@ suite('VirtualClock', () => {
         test('Setting time is limited by maximum', () => {
             clock.maximum = 100;
             clock.time = 200;
+            assert.equal(clock.time, 100);
+            clock.time = 100;
             assert.equal(clock.time, 100);
         });
         test('Setting maximum when time is past maximum resets time to maximum', () => {
