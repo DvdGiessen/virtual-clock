@@ -1,4 +1,11 @@
 {
-    "presets": ["latest"],
-    "plugins": ["transform-flow-strip-types"]
+    "presets": ["env", "flow"],
+    "env": {
+        "test": {
+            "plugins": ["istanbul"]
+        },
+        "production": {
+            "plugins": ["transform-es2015-modules-umd"]
+        }
+    }
 }
