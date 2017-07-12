@@ -1,6 +1,6 @@
 {
   "name": "virtual-clock",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A high-resolution, high-performance virtual clock supporting timed events",
   "author": "Daniël van de Giessen",
   "license": "MIT",
