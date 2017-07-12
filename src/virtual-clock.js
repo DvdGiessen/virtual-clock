@@ -23,8 +23,7 @@ export default class VirtualClock {
                 let now = process.hrtime();
                 return now[0] * 1e3 + now[1] / 1e6;
             })) ||
-            Date.now ||
-            (() => { return new Date().getTime(); })
+            Date.now
         ;
 
         // Current state
