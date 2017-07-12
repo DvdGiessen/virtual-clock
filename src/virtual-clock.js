@@ -1,7 +1,7 @@
 // @flow
 'use strict';
 export default class VirtualClock {
-    _now: Function;
+    _now: () => number;
     _previousTime: number;
     _previousNow: number;
     _rate: number;
@@ -9,18 +9,18 @@ export default class VirtualClock {
     _minimum: number;
     _maximum: number;
     _loop: boolean;
-    _eventListeners: Map<string, Function[]>;
-    _timeListeners: Map<[number, Function], [number, number, boolean]>;
+    _eventListeners: Map<string, (() => mixed)[]>;
+    _timeListeners: Map<[number, () => mixed], [number, number, boolean]>;
 
     /**
      * Constructs a stopped clock with default settings.
      */
-    constructor() {
+    constructor(): void {
         // Determine method for retrieving now
         this._now =
             (typeof performance !== 'undefined' && /*global performance */ performance.now.bind(performance)) ||
-            (typeof process !== 'undefined' && /*global process */ process.hrtime && (() => {
-                let now = process.hrtime();
+            (typeof process !== 'undefined' && /*global process */ process.hrtime && ((): number => {
+                let now: [number, number] = process.hrtime();
                 return now[0] * 1e3 + now[1] / 1e6;
             })) ||
             Date.now
@@ -95,7 +95,7 @@ export default class VirtualClock {
      *
      * Supported events: start, stop, settime, setrunning, setrate, setminimum, setmaximum, setloop
      */
-    on(event: string, callback: Function): VirtualClock {
+    on(event: string, callback: () => mixed): VirtualClock {
         // Add the listener
         let listeners = this._eventListeners.get(event);
         if(listeners) {
@@ -111,7 +111,7 @@ export default class VirtualClock {
     /**
      * Detaches a previously attached event listener.
      */
-    off(event: string, callback: Function): VirtualClock {
+    off(event: string, callback: () => mixed): VirtualClock {
         // Find the listener
         let listeners = this._eventListeners.get(event);
         if(listeners) {
@@ -147,7 +147,7 @@ export default class VirtualClock {
     /**
      * Private method for recalculating all registered time listeners.
      */
-    _recalculateTimeListeners() {
+    _recalculateTimeListeners(): void {
         for(let listener of this._timeListeners.keys()) {
             this._recalculateTimeListener(listener);
         }
@@ -156,7 +156,7 @@ export default class VirtualClock {
     /**
      * Private method for recalculating a specific registered time listener.
      */
-    _recalculateTimeListener(listener: [number, Function]) {
+    _recalculateTimeListener(listener: [number, () => mixed]): void {
         // Check if the listener is still registered
         let listenerData = this._timeListeners.get(listener);
         if(listenerData) {
@@ -236,7 +236,7 @@ export default class VirtualClock {
     /**
      * Attaches a time listener which fires once after the specified clock time has passed.
      */
-    onceAt(time: number, callback: Function): VirtualClock {
+    onceAt(time: number, callback: () => mixed): VirtualClock {
         // Do not allow setting an invalid value
         if(isNaN(time) || time === -Infinity || time === Infinity) {
             throw new Error('Can only set time to a finite number');
@@ -253,7 +253,7 @@ export default class VirtualClock {
     /**
      * Attaches a time listener which fires every time the specified clock time has passed.
      */
-    alwaysAt(time: number, callback: Function): VirtualClock {
+    alwaysAt(time: number, callback: () => mixed): VirtualClock {
         // Do not allow setting an invalid value
         if(isNaN(time) || time === -Infinity || time === Infinity) {
             throw new Error('Can only set time to a finite number');
@@ -270,7 +270,7 @@ export default class VirtualClock {
     /**
      * Detaches a previously attached time listener.
      */
-    removeAt(time: number, callback: Function): VirtualClock {
+    removeAt(time: number, callback: () => mixed): VirtualClock {
         // Loop over all listeners
         for(let listener of this._timeListeners.keys()) {
             let [listenerTime, listenerCallback] = listener;
@@ -349,7 +349,7 @@ export default class VirtualClock {
     /**
      * Sets the current clock time.
      */
-    set time(time: number) {
+    set time(time: number): void {
         // Do not allow setting an invalid value
         if(isNaN(time) || time === -Infinity || time === Infinity) {
             throw new Error('Can only set time to a finite number');
@@ -383,7 +383,7 @@ export default class VirtualClock {
     /**
      * Starts or stops running the clock.
      */
-    set running(running: boolean) {
+    set running(running: boolean): void {
         // Changing running state just calls start() or stop()
         running ? this.start() : this.stop();
     }
@@ -391,7 +391,7 @@ export default class VirtualClock {
     /**
      * Sets the rate (relative to real time) at which the clock runs.
      */
-    set rate(rate: number) {
+    set rate(rate: number): void {
         // Do not allow setting an invalid value
         if(isNaN(rate) || rate === -Infinity || rate === Infinity) {
             throw new Error('Can only set rate to a finite number');
@@ -419,7 +419,7 @@ export default class VirtualClock {
     /**
      * Sets minimum limit for time on the clock.
      */
-    set minimum(minimum: number) {
+    set minimum(minimum: number): void {
         // Do not allow setting an invalid value
         if(minimum > this._maximum || isNaN(minimum) || minimum === Infinity) {
             throw new Error('Cannot set minimum above maximum');
@@ -448,7 +448,7 @@ export default class VirtualClock {
     /**
      * Sets maximum limit for time on the clock.
      */
-    set maximum(maximum: number) {
+    set maximum(maximum: number): void {
         // Do not allow setting an invalid value
         if(maximum < this._minimum || isNaN(maximum) || maximum === -Infinity) {
             throw new Error('Cannot set maximum below minimum');
@@ -477,7 +477,7 @@ export default class VirtualClock {
     /**
      * Sets whether the clock loops around after reaching the maximum.
      */
-    set loop(loop: boolean) {
+    set loop(loop: boolean): void {
         // Only act if looping is different
         if(loop !== this._loop) {
             // Recalibrate
