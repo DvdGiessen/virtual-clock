@@ -580,6 +580,11 @@ suite('VirtualClock', () => {
             clock.time = 800;
             assert(callback.calledOnce);
         });
+        test('Detaching non-existing event listener throws an error', () => {
+            let callback = sinon.spy();
+            assert.throws(() => { clock.off('settime', callback); });
+            assert(!callback.called);
+        });
     });
 
     suite('.onceAt()', () => {
