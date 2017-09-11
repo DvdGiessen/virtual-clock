@@ -16,7 +16,7 @@ suite('VirtualClock', () => {
     });
 
     suite('.time', () => {
-        test('At instanciation time is 0', () => {
+        test('At creation time is 0', () => {
             assert.equal(clock.time, 0);
         });
         test('Setting time changes time', () => {
@@ -40,7 +40,7 @@ suite('VirtualClock', () => {
     });
 
     suite('.running', () => {
-        test('At instancation clock is not running', () => {
+        test('At creation clock is not running', () => {
             assert.equal(clock.running, false);
         });
         test('When not running time should not change', () => {
@@ -144,7 +144,7 @@ suite('VirtualClock', () => {
     });
 
     suite('.rate', () => {
-        test('At instancation rate is 1.0', () => {
+        test('At creation rate is 1.0', () => {
             assert.equal(clock.rate, 1.0);
         });
         test('Time flows normally at 1.0 rate', () => {
