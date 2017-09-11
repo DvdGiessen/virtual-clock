@@ -35,22 +35,22 @@
     "test": "cross-env NODE_ENV=test nyc mocha --ui tdd"
   },
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
-    "babel-eslint": "^7.2.3",
-    "babel-plugin-istanbul": "^4.1.4",
-    "babel-plugin-transform-es2015-modules-umd": "^6.24.1",
-    "babel-preset-env": "^1.6.0",
-    "babel-preset-flow": "^6.23.0",
-    "babel-register": "^6.26.0",
-    "chai": "^4.1.1",
-    "cross-env": "^5.0.5",
-    "eslint": "^4.5.0",
-    "eslint-plugin-flowtype": "^2.35.0",
-    "flow-bin": "^0.53.1",
+    "babel-cli": "^6",
+    "babel-core": "^6",
+    "babel-eslint": "^7.2",
+    "babel-plugin-istanbul": "^4.1",
+    "babel-plugin-transform-es2015-modules-umd": "^6",
+    "babel-preset-env": "^1.6",
+    "babel-preset-flow": "^6",
+    "babel-register": "^6",
+    "chai": "^4.1",
+    "cross-env": "^5.0",
+    "eslint": "^4.6",
+    "eslint-plugin-flowtype": "^2.35",
+    "flow-bin": "*",
     "lolex": "^2.1.2",
-    "mocha": "^3.5.0",
-    "nyc": "^11.1.0",
-    "sinon": "^3.2.1"
+    "mocha": "^3.5",
+    "nyc": "^11.2",
+    "sinon": "^3.2"
   }
 }
