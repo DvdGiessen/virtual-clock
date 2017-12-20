@@ -45,12 +45,12 @@
     "babel-register": "^6",
     "chai": "^4.1",
     "cross-env": "^5.1",
-    "eslint": "^4.10",
-    "eslint-plugin-flowtype": "^2.39",
+    "eslint": "^4.13",
+    "eslint-plugin-flowtype": "^2.40",
     "flow-bin": "*",
-    "lolex": "^2.1.3",
+    "lolex": "^2.3",
     "mocha": "^4.0",
-    "nyc": "^11.2",
-    "sinon": "^4.0"
+    "nyc": "^11.4",
+    "sinon": "^4.1"
   }
 }
