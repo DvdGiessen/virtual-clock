@@ -1,28 +1,33 @@
 # virtual-clock
-*A high-resolution, high-performance virtual clock supporting timed events*
+*A small, high-resolution, high-performance virtual clock library.*
 
-[![Travis CI](https://travis-ci.org/DvdGiessen/virtual-clock.svg?branch=master)](https://travis-ci.org/DvdGiessen/virtual-clock)
-[![Codecov](https://codecov.io/gh/DvdGiessen/virtual-clock/branch/master/graph/badge.svg)](https://codecov.io/gh/DvdGiessen/virtual-clock)
-[![Codacy](https://api.codacy.com/project/badge/Grade/bae573f4dab14b01af199ad21c810318)](https://www.codacy.com/app/github_94/virtual-clock)
-[![dependencies](https://david-dm.org/DvdGiessen/virtual-clock/status.svg)](https://david-dm.org/DvdGiessen/virtual-clock)
-[![devDependencies](https://david-dm.org/DvdGiessen/virtual-clock/dev-status.svg)](https://david-dm.org/DvdGiessen/virtual-clock?type=dev)
+[![npm](https://img.shields.io/npm/v/virtual-clock.svg)](https://www.npmjs.com/package/virtual-clock)
+[![license](https://img.shields.io/npm/l/virtual-clock.svg)](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE)
+[![dependencies](https://img.shields.io/david/DvdGiessen/virtual-clock.svg)](https://david-dm.org/DvdGiessen/virtual-clock)
+[![coverage](https://img.shields.io/codecov/c/github/DvdGiessen/virtual-clock/master.svg)](https://codecov.io/gh/DvdGiessen/virtual-clock)
+[![code quality](https://img.shields.io/codacy/grade/bae573f4dab14b01af199ad21c810318/master.svg)](https://www.codacy.com/app/github_94/virtual-clock)
+[![build status](https://img.shields.io/travis/DvdGiessen/virtual-clock/master.svg)](https://travis-ci.org/DvdGiessen/virtual-clock)
 
 ## Overview
-This project provides a small library for working with virtual clocks which can
-be used for tracking the passage of virtualized time. Clocks can be started and
-stopped, the rate at which time flows can be altered and even be made negative,
-causing time to flow backwards. Time can be limited by a minimum and maximum 
-value, and when both a minimum and maximum are defined time may be set to loop
-around. Time listeners may be attached which will fire when a given (absolute)
-time on the clock is passed.
+This small library provides virtual clocks which can be used for tracking the
+passage of time. It was designed with simulations, games and media applications
+in mind, but might prove useful for many other purposes as well.
 
-`virtual-clock` differs from other libraries by using high resolution time data
-to calculate its current clock time, independent of system clock drift (which
-might be adjusted manually or skewed by software like NTP). Apart from the time
-listeners functionality it doesn't use any form of timers, instead calculating
-the current clock time whenever it is requested. The library is optimized for
-performance, has extensive test coverage for all functionality and edge cases,
-and is fully compatible with both browser and Node.js environments.
+Virtual clocks can be started and stopped, the rate at which time flows can be
+altered and even be made negative, causing time to flow backwards. Time can be
+limited by a minimum and maximum value, and when both a minimum and maximum are
+defined time may be set to loop around. Time listeners may be attached which
+will fire when a given (absolute) time on the clock is passed, without having
+to worry about adjusting timeouts for pauses, rate changes or other conditions.
+
+`virtual-clock` uses high resolution time data for its virtualized clocks,
+independent of system clock drift (for example when being skewed by software
+like NTP). No timers are used for calculating the virtual clock time, instead
+some clever math is used to calculate time whenever it is requested.
+
+The library has extensive test coverage for all functionality and edge cases,
+provides type annotations for both TypeScript and Flow users, and is fully
+compatible with both browser and Node.js environments.
 
 
 ## Usage example
@@ -86,3 +91,7 @@ clock.alwaysAt(5 * 1000, () => {
 clock.minimum += 1000;
 clock.rate *= 2;
 ```
+
+## License
+`virtual-clock` is freely distributable under the terms of the
+[MIT license](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE).
