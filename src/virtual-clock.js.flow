@@ -1,0 +1,17 @@
+// @flow
+declare export default class VirtualClock {
+  start(): VirtualClock;
+  stop(): VirtualClock;
+  on(event: string, callback: () => mixed): VirtualClock;
+  off(event: string, callback: () => mixed): VirtualClock;
+  trigger(event: string, ...args: mixed[]): VirtualClock;
+  onceAt(time: number, callback: () => mixed): VirtualClock;
+  alwaysAt(time: number, callback: () => mixed): VirtualClock;
+  removeAt(time: number, callback: () => mixed): VirtualClock;
+  time: number;
+  running: boolean;
+  rate: number;
+  minimum: number;
+  maximum: number;
+  loop: boolean;
+}
