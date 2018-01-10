@@ -45,39 +45,39 @@ suite('VirtualClock', () => {
         });
         test('When not running time should not change', () => {
             assert.equal(clock.running, false);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert.equal(firstTime, secondTime);
             fakeTime.tick(150);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             assert.equal(secondTime, thirdTime);
         });
         test('When running time increases', () => {
             assert.equal(clock.running, false);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             clock.running = true;
             assert.equal(clock.running, true);
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert(secondTime > firstTime);
             fakeTime.tick(150);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             assert(thirdTime > secondTime);
         });
         test('After stopping to run time no longer changes', () => {
             assert.equal(clock.running, false);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             clock.running = true;
             assert.equal(clock.running, true);
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert(secondTime > firstTime);
             clock.running = false;
             assert.equal(clock.running, false);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             fakeTime.tick(150);
-            let fourthTime = clock.time;
+            const fourthTime = clock.time;
             assert.equal(thirdTime, fourthTime);
         });
     });
@@ -85,25 +85,25 @@ suite('VirtualClock', () => {
     suite('.start()', () => {
         test('Calling causes non-running clock to start running', () => {
             assert.equal(clock.running, false);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             clock.start();
             assert.equal(clock.running, true);
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert(secondTime > firstTime);
         });
         test('Calling does not affect running clock', () => {
             assert.equal(clock.running, false);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             clock.start();
             assert.equal(clock.running, true);
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert(secondTime > firstTime);
             clock.start();
             assert.equal(clock.running, true);
             fakeTime.tick(150);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             assert(thirdTime > secondTime);
         });
     });
@@ -112,33 +112,33 @@ suite('VirtualClock', () => {
         test('Calling causes running clock to stop running', () => {
             clock.running = true;
             assert.equal(clock.running, true);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert(secondTime > firstTime);
             clock.stop();
             assert.equal(clock.running, false);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             fakeTime.tick(150);
-            let fourthTime = clock.time;
+            const fourthTime = clock.time;
             assert.equal(thirdTime, fourthTime);
         });
         test('Calling does not affect non-running clock', () => {
             clock.running = true;
             assert.equal(clock.running, true);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert(secondTime > firstTime);
             clock.stop();
             assert.equal(clock.running, false);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             fakeTime.tick(150);
-            let fourthTime = clock.time;
+            const fourthTime = clock.time;
             assert.equal(thirdTime, fourthTime);
-            let fifthTime = clock.time;
+            const fifthTime = clock.time;
             fakeTime.tick(200);
-            let sixthTime = clock.time;
+            const sixthTime = clock.time;
             assert.equal(fifthTime, sixthTime);
         });
     });
@@ -158,15 +158,15 @@ suite('VirtualClock', () => {
         });
         test('Positive rate correctly corresponds to time flow', () => {
             clock.start();
-            for(let rate of [0.1, 0.2, 0.5, 0.9, 1.0, 1.1, 1.5, 2.0, 5.0]) {
+            for(const rate of [0.1, 0.2, 0.5, 0.9, 1.0, 1.1, 1.5, 2.0, 5.0]) {
                 clock.rate = rate;
                 assert.equal(clock.rate, rate);
-                let firstTime = clock.time;
+                const firstTime = clock.time;
                 fakeTime.tick(100);
-                let secondTime = clock.time;
+                const secondTime = clock.time;
                 assert.closeTo(secondTime - firstTime, 100 * rate, 0.0000001);
                 fakeTime.tick(150);
-                let thirdTime = clock.time;
+                const thirdTime = clock.time;
                 assert.closeTo(thirdTime - secondTime, 150 * rate, 0.0000001);
             }
         });
@@ -174,26 +174,26 @@ suite('VirtualClock', () => {
             clock.start();
             clock.rate = 0.0;
             assert.equal(clock.rate, 0.0);
-            let firstTime = clock.time;
+            const firstTime = clock.time;
             fakeTime.tick(100);
-            let secondTime = clock.time;
+            const secondTime = clock.time;
             assert.equal(firstTime, secondTime);
             fakeTime.tick(100);
-            let thirdTime = clock.time;
+            const thirdTime = clock.time;
             assert.equal(secondTime, thirdTime);
         });
         test('Negative rate correctly corresponds to time flow', () => {
             clock.time = 5000;
             clock.start();
-            for(let rate of [-0.1, -0.2, -0.5, -0.9, -1.0, -1.1, -1.5, -2.0, -5.0]) {
+            for(const rate of [-0.1, -0.2, -0.5, -0.9, -1.0, -1.1, -1.5, -2.0, -5.0]) {
                 clock.rate = rate;
                 assert.equal(clock.rate, rate);
-                let firstTime = clock.time;
+                const firstTime = clock.time;
                 fakeTime.tick(100);
-                let secondTime = clock.time;
+                const secondTime = clock.time;
                 assert.closeTo(secondTime - firstTime, 100 * rate, 0.0000001);
                 fakeTime.tick(150);
-                let thirdTime = clock.time;
+                const thirdTime = clock.time;
                 assert.closeTo(thirdTime - secondTime, 150 * rate, 0.0000001);
             }
         });
@@ -421,21 +421,21 @@ suite('VirtualClock', () => {
 
     suite('.on()', () => {
         test('Event listener for "start" fires when clock is started via .start()', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('start', callback);
             assert(!callback.called);
             clock.start();
             assert(callback.calledOnce);
         });
         test('Event listener for "start" fires when setting running to true', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('start', callback);
             assert(!callback.called);
             clock.running = true;
             assert(callback.calledOnce);
         });
         test('Event listener for "start" does not fire when clock is already running', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('start', callback);
             clock.start();
             clock.start();
@@ -444,7 +444,7 @@ suite('VirtualClock', () => {
         });
         test('Event listener for "stop" fires when clock is stopped via .stop()', () => {
             clock.start();
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('stop', callback);
             assert(!callback.called);
             clock.stop();
@@ -452,7 +452,7 @@ suite('VirtualClock', () => {
         });
         test('Event listener for "stop" fires when setting running to false', () => {
             clock.start();
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('stop', callback);
             assert(!callback.called);
             clock.running = false;
@@ -460,7 +460,7 @@ suite('VirtualClock', () => {
         });
         test('Event listener for "stop" does not fire when clock is not running', () => {
             clock.start();
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('stop', callback);
             clock.stop();
             clock.stop();
@@ -468,7 +468,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Event listener for "settime" fires when time is set', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('settime', callback);
             assert(!callback.called);
             clock.time = 500;
@@ -479,7 +479,7 @@ suite('VirtualClock', () => {
             assert(callback.calledThrice);
         });
         test('Event listener for multiple events gets fired for all of them', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('start', callback);
             clock.on('settime', callback);
             clock.on('stop', callback);
@@ -492,9 +492,9 @@ suite('VirtualClock', () => {
             assert(callback.calledThrice);
         });
         test('Multiple event listener for a single event all get fired', () => {
-            let callbackOne = sinon.spy();
-            let callbackTwo = sinon.spy();
-            let callbackThree = sinon.spy();
+            const callbackOne = sinon.spy();
+            const callbackTwo = sinon.spy();
+            const callbackThree = sinon.spy();
             clock.on('settime', callbackOne);
             clock.on('settime', callbackTwo);
             clock.on('settime', callbackThree);
@@ -507,7 +507,7 @@ suite('VirtualClock', () => {
             assert(callbackThree.calledOnce);
         });
         test('Event listener for "setrunning" fires when running is set to different value', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('setrunning', callback);
             assert(!callback.called);
             clock.running = true;
@@ -522,7 +522,7 @@ suite('VirtualClock', () => {
             assert(callback.calledThrice);
         });
         test('Event listener for "setrate" fires when rate is set to different value', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('setrate', callback);
             assert(!callback.called);
             clock.rate = 5.0;
@@ -537,7 +537,7 @@ suite('VirtualClock', () => {
             assert(callback.calledThrice);
         });
         test('Event listener for "setmaximum" fires when maximum is set to different value', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('setmaximum', callback);
             assert(!callback.called);
             clock.maximum = 500;
@@ -553,7 +553,7 @@ suite('VirtualClock', () => {
             assert(callback.calledThrice);
         });
         test('Event listener for "setloop" fires when loop is set to different value', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('setloop', callback);
             assert(!callback.called);
             clock.loop = true;
@@ -571,7 +571,7 @@ suite('VirtualClock', () => {
 
     suite('.off()', () => {
         test('Detaching event listener causes it to no longer fire', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.on('settime', callback);
             assert(!callback.called);
             clock.time = 500;
@@ -581,7 +581,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Detaching non-existing event listener throws an error', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             assert.throws(() => { clock.off('settime', callback); });
             assert(!callback.called);
         });
@@ -589,7 +589,7 @@ suite('VirtualClock', () => {
 
     suite('.onceAt()', () => {
         test('Attaching single-fire time listener causes it to fire after the specified time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.start();
             fakeTime.tick(499);
@@ -598,7 +598,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Single-fire time listener can only be bound to a finite time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             assert.throws(() => {
                 return clock.onceAt(Infinity, callback);
             });
@@ -607,7 +607,7 @@ suite('VirtualClock', () => {
             });
         });
         test('Single-fire time listener correctly interacts with setting time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.start();
             fakeTime.tick(200);
@@ -618,7 +618,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Setting time to time of single-fire time listener causes it to fire if the clock is running', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.start();
             assert(!callback.called);
@@ -627,7 +627,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Setting time to time of single-fire time listener for a non-running clock fires it at clock start', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             assert(!callback.called);
             clock.time = 500;
@@ -638,7 +638,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Single-fire time listener correctly interacts with rate changes', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.start();
             fakeTime.tick(200);
@@ -653,7 +653,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Single-fire time listener correctly interacts with negative rate', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.time = 700;
             clock.rate = -1.0;
@@ -664,7 +664,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Single-fire time listener correctly interacts with minimum', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(-100, callback);
             clock.minimum = -50;
             clock.rate = -1.0;
@@ -674,7 +674,7 @@ suite('VirtualClock', () => {
             assert(!callback.called);
         });
         test('Single-fire time listener correctly interacts with maximum', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(700, callback);
             clock.maximum = 500;
             clock.start();
@@ -682,7 +682,7 @@ suite('VirtualClock', () => {
             assert(!callback.called);
         });
         test('Single-fire time listener correctly interacts with forward looping', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.minimum = -100;
             clock.maximum = 1000;
@@ -696,7 +696,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Single-fire time listener correctly interacts with backward looping', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.rate = -1.0;
             clock.minimum = -100;
@@ -711,7 +711,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Single-fire time listener only fires once', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.start();
             fakeTime.tick(600);
@@ -721,8 +721,8 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Multiple single-fire time listeners fire in the order they were added', () => {
-            let callbackOne = sinon.spy();
-            let callbackTwo = sinon.spy();
+            const callbackOne = sinon.spy();
+            const callbackTwo = sinon.spy();
             clock.onceAt(500, callbackOne);
             clock.onceAt(500, callbackTwo);
             clock.start();
@@ -731,7 +731,7 @@ suite('VirtualClock', () => {
             assert(callbackTwo.calledAfter(callbackOne));
         });
         test('Adding the same single-fire listener callback multiple times does not overwrite it', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.onceAt(500, callback);
             clock.start();
@@ -739,7 +739,7 @@ suite('VirtualClock', () => {
             assert(callback.calledTwice);
         });
         test('Adding the multiple types of the same single-fire listener callback does not overwrite it', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.alwaysAt(500, callback);
             clock.start();
@@ -752,7 +752,7 @@ suite('VirtualClock', () => {
 
     suite('.alwaysAt()', () => {
         test('Attaching always-fire time listener causes it to fire after the specified time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.start();
             fakeTime.tick(499);
@@ -761,7 +761,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Always-fire time listener can only be bound to a finite time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             assert.throws(() => {
                 return clock.alwaysAt(Infinity, callback);
             });
@@ -770,7 +770,7 @@ suite('VirtualClock', () => {
             });
         });
         test('Always-fire time listener correctly interacts with setting time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.start();
             fakeTime.tick(200);
@@ -781,7 +781,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Setting time to time of always-fire time listener causes it to fire if the clock is running', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.start();
             assert(!callback.called);
@@ -790,7 +790,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Setting time to time of always-fire time listener for a non-running clock fires it at clock start', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             assert(!callback.called);
             clock.time = 500;
@@ -801,7 +801,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Always-fire time listener correctly interacts with rate changes', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.start();
             fakeTime.tick(200);
@@ -816,7 +816,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Always-fire time listener correctly interacts with negative rate', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.time = 700;
             clock.rate = -1.0;
@@ -827,7 +827,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Always-fire time listener correctly interacts with minimum', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(-100, callback);
             clock.minimum = -50;
             clock.rate = -1.0;
@@ -837,7 +837,7 @@ suite('VirtualClock', () => {
             assert(!callback.called);
         });
         test('Always-fire time listener correctly interacts with maximum', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(700, callback);
             clock.maximum = 500;
             clock.start();
@@ -845,7 +845,7 @@ suite('VirtualClock', () => {
             assert(!callback.called);
         });
         test('Always-fire time listener correctly interacts with forward looping', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.minimum = -100;
             clock.maximum = 900;
@@ -859,7 +859,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Always-fire time listener correctly interacts with backward looping', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.rate = -1.0;
             clock.minimum = -100;
@@ -874,7 +874,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Always-fire time listener fires every time', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.start();
             fakeTime.tick(600);
@@ -884,8 +884,8 @@ suite('VirtualClock', () => {
             assert(callback.calledTwice);
         });
         test('Multiple always-fire time listeners fire in the order they were added', () => {
-            let callbackOne = sinon.spy();
-            let callbackTwo = sinon.spy();
+            const callbackOne = sinon.spy();
+            const callbackTwo = sinon.spy();
             clock.alwaysAt(500, callbackOne);
             clock.alwaysAt(500, callbackTwo);
             clock.start();
@@ -894,7 +894,7 @@ suite('VirtualClock', () => {
             assert(callbackTwo.calledAfter(callbackOne));
         });
         test('Adding the same always-fire listener callback multiple times does not overwrite it', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.alwaysAt(500, callback);
             clock.start();
@@ -902,7 +902,7 @@ suite('VirtualClock', () => {
             assert(callback.calledTwice);
         });
         test('Adding the multiple types of the same always-fire listener callback does not overwrite it', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.onceAt(500, callback);
             clock.start();
@@ -915,7 +915,7 @@ suite('VirtualClock', () => {
 
     suite('.removeAt()', () => {
         test('Detaching time listeners before time is reached causes them to never fire', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.alwaysAt(500, callback);
             clock.start();
@@ -925,7 +925,7 @@ suite('VirtualClock', () => {
             assert(!callback.called);
         });
         test('Detaching always-fire time listener causes it to never fire again', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.alwaysAt(500, callback);
             clock.start();
             fakeTime.tick(600);
@@ -935,7 +935,7 @@ suite('VirtualClock', () => {
             assert(callback.calledOnce);
         });
         test('Detaching time listeners before starting the clock causes them to never fire', () => {
-            let callback = sinon.spy();
+            const callback = sinon.spy();
             clock.onceAt(500, callback);
             clock.alwaysAt(500, callback);
             clock.time = 500;
