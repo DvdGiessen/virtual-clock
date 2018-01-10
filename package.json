@@ -1,7 +1,7 @@
 {
   "name": "virtual-clock",
   "version": "1.0.4",
-  "description": "A high-resolution, high-performance virtual clock supporting timed events",
+  "description": "A small, high-resolution, high-performance virtual clock library",
   "author": "Daniël van de Giessen",
   "license": "MIT",
   "homepage": "https://github.com/DvdGiessen/virtual-clock#readme",
@@ -32,9 +32,10 @@
   "main": "dist/virtual-clock.js",
   "module": "dist/virtual-clock.mjs",
   "scripts": {
+    "build:clean": "rimraf dist/",
     "build:umd": "cross-env NODE_ENV=production babel src/ --out-dir dist/ --source-maps --copy-files",
-    "build:mjs": "flow-remove-types -p -m -o dist/virtual-clock.mjs src/virtual-clock.js",
-    "build": "npm run build:umd && npm run build:mjs",
+    "build:mjs": "flow-remove-types -o dist/virtual-clock.mjs src/virtual-clock.js",
+    "build": "npm run build:clean && npm run build:umd && npm run build:mjs",
     "flow": "flow",
     "lint": "eslint src/**/*.js",
     "prepare": "npm run build",
@@ -59,6 +60,7 @@
     "lolex": "^2.3",
     "mocha": "^4.1",
     "nyc": "^11.4",
+    "rimraf": "^2.6.2",
     "sinon": "^4.1.4"
   }
 }

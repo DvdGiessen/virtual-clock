@@ -1,5 +1,5 @@
 # virtual-clock
-*A small, high-resolution, high-performance virtual clock library.*
+*A small, high-resolution, high-performance virtual clock library*
 
 [![npm](https://img.shields.io/npm/v/virtual-clock.svg)](https://www.npmjs.com/package/virtual-clock)
 [![license](https://img.shields.io/npm/l/virtual-clock.svg)](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE)
