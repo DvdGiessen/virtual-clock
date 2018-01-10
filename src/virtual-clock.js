@@ -10,7 +10,8 @@ export default class VirtualClock {
     _maximum: number;
     _loop: boolean;
     _eventListeners: Map<string, (() => mixed)[]>;
-    _timeListeners: Map<[number, () => mixed], [number, number, boolean]>;
+    _timeListeners: Map<[number, () => mixed], [TimeoutID, number, boolean]>;
+    _nullTimeoutID: TimeoutID;
 
     /**
      * Constructs a stopped clock with default settings.
@@ -42,6 +43,9 @@ export default class VirtualClock {
         // Event and time listeners
         this._eventListeners = new Map();
         this._timeListeners = new Map();
+
+        // Create unique TimeoutID to track non-scheduled timers
+        this._nullTimeoutID = setTimeout(() => {}, 0);
 
         // Make private properties non-enumerable
         for(let prop in this) {
@@ -213,7 +217,7 @@ export default class VirtualClock {
                                 let [, , once] = listenerData;
 
                                 // Save time of call
-                                this._timeListeners.set(listener, [0, this.time, once]);
+                                this._timeListeners.set(listener, [this._nullTimeoutID, this.time, once]);
 
                                 // Call the callback
                                 callback.call(this);
@@ -243,7 +247,7 @@ export default class VirtualClock {
         }
 
         let listener = [time, callback];
-        this._timeListeners.set(listener, [0, NaN, true]);
+        this._timeListeners.set(listener, [this._nullTimeoutID, NaN, true]);
         this._recalculateTimeListener(listener);
 
         // Method chaining
@@ -260,7 +264,7 @@ export default class VirtualClock {
         }
 
         let listener = [time, callback];
-        this._timeListeners.set(listener, [0, NaN, false]);
+        this._timeListeners.set(listener, [this._nullTimeoutID, NaN, false]);
         this._recalculateTimeListener(listener);
 
         // Method chaining
