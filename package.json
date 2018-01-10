@@ -30,7 +30,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production babel src/ --out-dir dist/ --source-maps",
     "flow": "flow",
-    "lint": "eslint src/**",
+    "lint": "eslint src/**/*.js",
     "prepare": "npm run build",
     "test": "cross-env NODE_ENV=test nyc mocha --ui tdd"
   },
