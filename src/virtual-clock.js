@@ -21,7 +21,7 @@ export default class VirtualClock {
         this._now =
             (typeof performance !== 'undefined' && /*global performance */ performance.now.bind(performance)) ||
             (typeof process !== 'undefined' && /*global process */ process.hrtime && ((): number => {
-                let now: [number, number] = process.hrtime();
+                const now: [number, number] = process.hrtime();
                 return now[0] * 1e3 + now[1] / 1e6;
             })) ||
             Date.now
@@ -48,7 +48,7 @@ export default class VirtualClock {
         this._nullTimeoutID = setTimeout(() => {}, 0);
 
         // Make private properties non-enumerable
-        for(let prop in this) {
+        for(const prop in this) {
             if(prop.startsWith('_')) {
                 Object.defineProperty(this, prop, { enumerable: false });
             }
@@ -101,7 +101,7 @@ export default class VirtualClock {
      */
     on(event: string, callback: () => mixed): VirtualClock {
         // Add the listener
-        let listeners = this._eventListeners.get(event);
+        const listeners = this._eventListeners.get(event);
         if(listeners) {
             listeners.push(callback);
         } else {
@@ -117,9 +117,9 @@ export default class VirtualClock {
      */
     off(event: string, callback: () => mixed): VirtualClock {
         // Find the listener
-        let listeners = this._eventListeners.get(event);
+        const listeners = this._eventListeners.get(event);
         if(listeners) {
-            let i = listeners.indexOf(callback);
+            const i = listeners.indexOf(callback);
             if(i >= 0) {
                 // Remove the listener
                 listeners.splice(i, 1);
@@ -137,7 +137,7 @@ export default class VirtualClock {
      * Triggers an attached event listener.
      */
     trigger(event: string, ...args: mixed[]): VirtualClock {
-        let listeners = this._eventListeners.get(event);
+        const listeners = this._eventListeners.get(event);
         if(listeners) {
             listeners.slice(0).forEach((listener) => {
                 listener.apply(this, args);
@@ -152,7 +152,7 @@ export default class VirtualClock {
      * Private method for recalculating all registered time listeners.
      */
     _recalculateTimeListeners(): void {
-        for(let listener of this._timeListeners.keys()) {
+        for(const listener of this._timeListeners.keys()) {
             this._recalculateTimeListener(listener);
         }
     }
@@ -162,10 +162,10 @@ export default class VirtualClock {
      */
     _recalculateTimeListener(listener: [number, () => mixed]): void {
         // Check if the listener is still registered
-        let listenerData = this._timeListeners.get(listener);
+        const listenerData = this._timeListeners.get(listener);
         if(listenerData) {
-            let [time, callback] = listener;
-            let [timeoutId, lastCalled, once] = listenerData;
+            const [time, callback] = listener;
+            const [timeoutId, lastCalled, once] = listenerData;
 
             // Clear any open timeouts
             clearTimeout(timeoutId);
@@ -173,7 +173,7 @@ export default class VirtualClock {
             // Only add timeouts if we're running and the time is reachable
             if(this._running && this._rate !== 0 && time >= this._minimum && time <= this._maximum) {
                 // Get current time
-                let currentTime = this.time;
+                const currentTime = this.time;
 
                 // Did we already run at this time?
                 if(currentTime === lastCalled) {
@@ -211,10 +211,10 @@ export default class VirtualClock {
                         // Set timeout
                         this._timeListeners.set(listener, [setTimeout(() => {
                             // Safety checkif listener is still registered
-                            let listenerData = this._timeListeners.get(listener);
+                            const listenerData = this._timeListeners.get(listener);
                             if(listenerData) {
                                 // Re-acquire once
-                                let [, , once] = listenerData;
+                                const [, , once] = listenerData;
 
                                 // Save time of call
                                 this._timeListeners.set(listener, [this._nullTimeoutID, this.time, once]);
@@ -246,7 +246,7 @@ export default class VirtualClock {
             throw new Error('Can only set time to a finite number');
         }
 
-        let listener = [time, callback];
+        const listener = [time, callback];
         this._timeListeners.set(listener, [this._nullTimeoutID, NaN, true]);
         this._recalculateTimeListener(listener);
 
@@ -263,7 +263,7 @@ export default class VirtualClock {
             throw new Error('Can only set time to a finite number');
         }
 
-        let listener = [time, callback];
+        const listener = [time, callback];
         this._timeListeners.set(listener, [this._nullTimeoutID, NaN, false]);
         this._recalculateTimeListener(listener);
 
@@ -276,8 +276,8 @@ export default class VirtualClock {
      */
     removeAt(time: number, callback: () => mixed): VirtualClock {
         // Loop over all listeners
-        for(let listener of this._timeListeners.keys()) {
-            let [listenerTime, listenerCallback] = listener;
+        for(const listener of this._timeListeners.keys()) {
+            const [listenerTime, listenerCallback] = listener;
 
             // If the listener matches, delete it
             if(listenerTime === time && listenerCallback === callback) {
@@ -361,7 +361,7 @@ export default class VirtualClock {
 
         // Only act if the time is different
         // Note: If time is changing, it is always assumed to be different
-        let currentTime = this.time;
+        const currentTime = this.time;
         if(
             !(
                 !this._running ||
@@ -432,7 +432,7 @@ export default class VirtualClock {
         // Only act if the minimum is different
         if(minimum !== this._minimum) {
             // First get the calculated time, calculated using the old minimum
-            let previousTime = this.time;
+            const previousTime = this.time;
 
             // Change the minimum
             this._minimum = minimum;
@@ -461,7 +461,7 @@ export default class VirtualClock {
         // Only act if the maximum is different
         if(maximum !== this._maximum) {
             // First get the calculated time, calculated using the old maximum
-            let previousTime = this.time;
+            const previousTime = this.time;
 
             // Change the maximum
             this._maximum = maximum;
