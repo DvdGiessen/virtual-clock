@@ -1,5 +1,12 @@
 // @flow
 'use strict';
+
+/**
+ * A configurable virtual clock for tracking time.
+ *
+ * @author Daniël van de Giessen
+ * @see https://github.com/DvdGiessen/virtual-clock#readme
+ */
 export default class VirtualClock {
     _now: () => number;
     _previousTime: number;
