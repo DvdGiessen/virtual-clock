@@ -1,5 +1,5 @@
 # virtual-clock
-*A small, high-resolution, high-performance virtual clock library*
+*A small library for configurable, high-resolution, high-performance virtual clocks*
 
 [![npm](https://img.shields.io/npm/v/virtual-clock.svg)](https://www.npmjs.com/package/virtual-clock)
 [![license](https://img.shields.io/npm/l/virtual-clock.svg)](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE)
@@ -9,9 +9,9 @@
 [![build status](https://img.shields.io/travis/DvdGiessen/virtual-clock/master.svg)](https://travis-ci.org/DvdGiessen/virtual-clock)
 
 ## Overview
-This small library provides virtual clocks which can be used for tracking the
-passage of time. It was designed with simulations, games and media applications
-in mind, but might prove useful for many other purposes as well.
+This small and efficient library provides configurable virtual clocks for
+tracking time in for example simulations, games, media applications, or even
+just a simple stopwatch.
 
 Virtual clocks can be started and stopped, the rate at which time flows can be
 altered and even be made negative, causing time to flow backwards. Time can be

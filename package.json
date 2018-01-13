@@ -1,34 +1,36 @@
 {
   "name": "virtual-clock",
   "version": "1.0.4",
-  "description": "A small, high-resolution, high-performance virtual clock library",
+  "description": "A small library for configurable, high-resolution, high-performance virtual clocks",
   "author": "Daniël van de Giessen",
   "license": "MIT",
   "homepage": "https://github.com/DvdGiessen/virtual-clock#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DvdGiessen/virtual-clock.git"
+  },
   "bugs": {
     "url": "https://github.com/DvdGiessen/virtual-clock/issues"
   },
-  "files": [
-    "dist"
-  ],
   "keywords": [
-    "virtual",
     "clock",
-    "time",
     "timer",
-    "timing",
     "stopwatch",
+    "settimout",
+    "setinterval",
+    "virtual",
+    "time",
+    "timing",
     "timeout",
     "interval",
     "duration",
     "event",
-    "settimout",
-    "setinterval"
+    "hrtime",
+    "hpet"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/DvdGiessen/virtual-clock.git"
-  },
+  "files": [
+    "dist"
+  ],
   "main": "dist/virtual-clock.js",
   "module": "dist/virtual-clock.mjs",
   "scripts": {
@@ -61,6 +63,6 @@
     "mocha": "^4.1",
     "nyc": "^11.4",
     "rimraf": "^2.6.2",
-    "sinon": "^4.1.4"
+    "sinon": "^4.1.5"
   }
 }
