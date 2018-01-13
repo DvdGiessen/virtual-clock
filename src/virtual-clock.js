@@ -172,10 +172,10 @@ export default class VirtualClock {
         const listenerData = this._timeListeners.get(listener);
         if(listenerData) {
             const [time, callback] = listener;
-            const [timeoutId, lastCalled, once] = listenerData;
+            const [timeoutID, lastCalled, once] = listenerData;
 
             // Clear any open timeouts
-            clearTimeout(timeoutId);
+            clearTimeout(timeoutID);
 
             // Only add timeouts if we're running and the time is reachable
             if(this._running && this._rate !== 0 && time >= this._minimum && time <= this._maximum) {
@@ -217,25 +217,20 @@ export default class VirtualClock {
 
                         // Set timeout
                         this._timeListeners.set(listener, [setTimeout(() => {
-                            // Safety checkif listener is still registered
-                            const listenerData = this._timeListeners.get(listener);
-                            if(listenerData) {
-                                // Re-acquire once
-                                const [, , once] = listenerData;
-
+                            // Should we self-destruct
+                            if(once) {
+                                this._timeListeners.delete(listener);
+                            } else {
                                 // Save time of call
                                 this._timeListeners.set(listener, [this._nullTimeoutID, this.time, once]);
+                            }
 
-                                // Call the callback
-                                callback.call(this);
+                            // Call the callback
+                            callback.call(this);
 
-                                // Should we self-destruct
-                                if(once) {
-                                    this._timeListeners.delete(listener);
-                                } else {
-                                    // Recalculate the time listener
-                                    this._recalculateTimeListener(listener);
-                                }
+                            // Recalculate the time listener
+                            if(!once) {
+                                this._recalculateTimeListener(listener);
                             }
                         }, until), NaN, once]);
                     }
@@ -279,21 +274,37 @@ export default class VirtualClock {
     }
 
     /**
-     * Detaches a previously attached time listener.
+     * Detaches a previously attached time listener. If multiple listeners match, all are removed.
      */
     removeAt(time: number, callback: () => mixed): VirtualClock {
+        // Track whether we removed anything
+        let hasRemoved = false;
+
         // Loop over all listeners
         for(const listener of this._timeListeners.keys()) {
             const [listenerTime, listenerCallback] = listener;
-
-            // If the listener matches, delete it
             if(listenerTime === time && listenerCallback === callback) {
+                // Cancel the timeout
+                const listenerData = this._timeListeners.get(listener);
+                if(listenerData) {
+                    clearTimeout(listenerData[0]);
+                }
+
+                // Remove the listener
                 this._timeListeners.delete(listener);
+
+                // We have removed at least one listener
+                hasRemoved = true;
             }
         }
 
-        // Method chaining
-        return this;
+        if(hasRemoved) {
+            // Method chaining
+            return this;
+        } else {
+            // When not found, throw an error
+            throw new Error('Time listener not found');
+        }
     }
 
     // Getters

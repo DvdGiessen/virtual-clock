@@ -720,6 +720,17 @@ suite('VirtualClock', () => {
             fakeTime.tick(200);
             assert(callback.calledOnce);
         });
+        test('Single-fire time listener only fires once when the clock is modified in the callback', () => {
+            const callback = sinon.spy(() => {
+                clock.time = 400;
+            });
+            clock.onceAt(500, callback);
+            clock.start();
+            fakeTime.tick(600);
+            assert(callback.calledOnce);
+            fakeTime.tick(200);
+            assert(callback.calledOnce);
+        });
         test('Multiple single-fire time listeners fire in the order they were added', () => {
             const callbackOne = sinon.spy();
             const callbackTwo = sinon.spy();
@@ -752,13 +763,21 @@ suite('VirtualClock', () => {
 
     suite('.alwaysAt()', () => {
         test('Attaching always-fire time listener causes it to fire after the specified time', () => {
-            const callback = sinon.spy();
-            clock.alwaysAt(500, callback);
+            const callbackOne = sinon.spy();
+            clock.alwaysAt(500, callbackOne);
             clock.start();
             fakeTime.tick(499);
-            assert(!callback.called);
+            assert(!callbackOne.called);
             fakeTime.tick(1);
-            assert(callback.calledOnce);
+            assert(callbackOne.calledOnce);
+
+            const callbackTwo = sinon.spy();
+            clock.alwaysAt(700, callbackTwo);
+            clock.start();
+            fakeTime.tick(199);
+            assert(!callbackTwo.called);
+            fakeTime.tick(1);
+            assert(callbackTwo.calledOnce);
         });
         test('Always-fire time listener can only be bound to a finite time', () => {
             const callback = sinon.spy();
@@ -883,6 +902,17 @@ suite('VirtualClock', () => {
             fakeTime.tick(200);
             assert(callback.calledTwice);
         });
+        test('Always-fire time listener fires correctly when the clock is modified in the callback', () => {
+            const callback = sinon.spy(() => {
+                clock.time = 400;
+            });
+            clock.alwaysAt(500, callback);
+            clock.start();
+            fakeTime.tick(550);
+            assert(callback.calledOnce);
+            fakeTime.tick(100);
+            assert(callback.calledTwice);
+        });
         test('Multiple always-fire time listeners fire in the order they were added', () => {
             const callbackOne = sinon.spy();
             const callbackTwo = sinon.spy();
@@ -916,9 +946,14 @@ suite('VirtualClock', () => {
     suite('.removeAt()', () => {
         test('Detaching time listeners before time is reached causes them to never fire', () => {
             const callback = sinon.spy();
-            clock.onceAt(500, callback);
-            clock.alwaysAt(500, callback);
             clock.start();
+            clock.onceAt(500, callback);
+            fakeTime.tick(400);
+            clock.removeAt(500, callback);
+            fakeTime.tick(200);
+            assert(!callback.called);
+            clock.time = 0;
+            clock.alwaysAt(500, callback);
             fakeTime.tick(400);
             clock.removeAt(500, callback);
             fakeTime.tick(200);
@@ -937,6 +972,14 @@ suite('VirtualClock', () => {
         test('Detaching time listeners before starting the clock causes them to never fire', () => {
             const callback = sinon.spy();
             clock.onceAt(500, callback);
+            clock.time = 500;
+            clock.removeAt(500, callback);
+            clock.start();
+            fakeTime.tick(100);
+            clock.time = 400;
+            fakeTime.tick(200);
+            assert(!callback.called);
+            clock.time = 0;
             clock.alwaysAt(500, callback);
             clock.time = 500;
             clock.removeAt(500, callback);
@@ -944,6 +987,23 @@ suite('VirtualClock', () => {
             fakeTime.tick(100);
             clock.time = 400;
             fakeTime.tick(200);
+            assert(!callback.called);
+        });
+        test('Detaching time listeners removes all matching time listeners in a single call', () => {
+            const callback = sinon.spy();
+            clock.onceAt(500, callback);
+            clock.alwaysAt(500, callback);
+            clock.time = 500;
+            clock.removeAt(500, callback);
+            clock.start();
+            fakeTime.tick(100);
+            clock.time = 400;
+            fakeTime.tick(200);
+            assert(!callback.called);
+        });
+        test('Detaching non-existing time listener throws an error', () => {
+            const callback = sinon.spy();
+            assert.throws(() => { clock.removeAt(500, callback); });
             assert(!callback.called);
         });
     });
