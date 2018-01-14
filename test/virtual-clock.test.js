@@ -158,7 +158,7 @@ suite('VirtualClock', () => {
         });
         test('Positive rate correctly corresponds to time flow', () => {
             clock.start();
-            for(const rate of [0.1, 0.2, 0.5, 0.9, 1.0, 1.1, 1.5, 2.0, 5.0]) {
+            for (const rate of [0.1, 0.2, 0.5, 0.9, 1.0, 1.1, 1.5, 2.0, 5.0]) {
                 clock.rate = rate;
                 assert.equal(clock.rate, rate);
                 const firstTime = clock.time;
@@ -185,7 +185,7 @@ suite('VirtualClock', () => {
         test('Negative rate correctly corresponds to time flow', () => {
             clock.time = 5000;
             clock.start();
-            for(const rate of [-0.1, -0.2, -0.5, -0.9, -1.0, -1.1, -1.5, -2.0, -5.0]) {
+            for (const rate of [-0.1, -0.2, -0.5, -0.9, -1.0, -1.1, -1.5, -2.0, -5.0]) {
                 clock.rate = rate;
                 assert.equal(clock.rate, rate);
                 const firstTime = clock.time;
