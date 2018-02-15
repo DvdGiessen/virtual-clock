@@ -29,7 +29,6 @@ The library has extensive test coverage for all functionality and edge cases,
 provides type annotations for both TypeScript and Flow users, and is fully
 compatible with both browser and Node.js environments.
 
-
 ## Usage example
 ```js
 import VirtualClock from 'virtual-clock';
@@ -73,7 +72,7 @@ clock.loop = true;
 
 // Event listeners may be attached to notice changes
 clock.on('start', () => {
-    console.log('The clocks have started!');
+    console.log('The clock has been started!');
 });
 clock.on('setrate', () => {
     console.log('The flow rate of time was set!');
@@ -91,6 +90,94 @@ clock.alwaysAt(5 * 1000, () => {
 clock.minimum += 1000;
 clock.rate *= 2;
 ```
+
+## API
+```js
+class VirtualClock {
+    /**
+     * Starts running the clock. Does nothing when clock was already running.
+     */
+    start(): VirtualClock;
+
+    /**
+     * Stops running the clock. Does nothing when clock was not running.
+     */
+    stop(): VirtualClock;
+
+    /**
+     * Attaches an event listener.
+     *
+     * Supported events: start, stop, settime, setrunning, setrate, setminimum, setmaximum, setloop
+     */
+    on(event: string, callback: () => mixed): VirtualClock;
+
+    /**
+     * Detaches a previously attached event listener.
+     */
+    off(event: string, callback: () => mixed): VirtualClock;
+
+    /**
+     * Triggers an attached event listener.
+     */
+    trigger(event: string, ...args: mixed[]): VirtualClock;
+
+    /**
+     * Attaches a time listener which fires once after the specified clock time has passed.
+     */
+    onceAt(time: number, callback: () => mixed): VirtualClock;
+
+    /**
+     * Attaches a time listener which fires every time the specified clock time has passed.
+     */
+    alwaysAt(time: number, callback: () => mixed): VirtualClock;
+
+    /**
+     * Detaches a previously attached time listener. If multiple listeners match, all are removed.
+     */
+    removeAt(time: number, callback: () => mixed): VirtualClock;
+
+    /**
+     * The current clock time.
+     */
+    time: number;
+
+    /**
+     * Whether the clock is currently running.
+     */
+    running: boolean;
+
+    /**
+     * The current rate (relative to real time) the clock runs at.
+     */
+    rate: number;
+
+    /**
+     * The minimum limit for time on the clock.
+     */
+    minimum: number;
+
+    /**
+     * The maximum limit for time on the clock.
+     */
+    maximum: number;
+
+    /**
+     * Whether the clock will loop around after reaching the maximum.
+     */
+    loop: boolean;
+}
+```
+Note that all methods return the called object to allow for method chaining.
+
+## Issues and contributing
+If you have any issues with `virtual-clock`, first check the [issue tracker](
+https://github.com/DvdGiessen/virtual-clock/issues) to see whether it was
+already reported by someone else. If not, go ahead and [create a new issue](
+https://github.com/DvdGiessen/virtual-clock/issues/new). Try to include as much
+information (version of the library, example code to reproduce) as possible.
+
+If you want to contribute, feel free to open a pull request on [GitHub](
+https://github.com/DvdGiessen/virtual-clock)!
 
 ## License
 `virtual-clock` is freely distributable under the terms of the
