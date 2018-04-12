@@ -1,4 +1,4 @@
-export = VirtualClock;
+export default VirtualClock;
 
 /**
  * A configurable virtual clock for tracking time.
@@ -6,7 +6,7 @@ export = VirtualClock;
  * @author Daniël van de Giessen
  * @see https://github.com/DvdGiessen/virtual-clock#readme
  */
-declare class VirtualClock {
+export declare class VirtualClock {
     /**
      * Starts running the clock. Does nothing when clock was already running.
      */
