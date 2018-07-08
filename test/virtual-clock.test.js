@@ -39,6 +39,25 @@ suite('VirtualClock', () => {
         });
     });
 
+    suite('.now()', () => {
+        test('At creation now() returns 0', () => {
+            assert.equal(clock.now(), 0);
+        });
+        test('Setting time changes return value of now()', () => {
+            assert.equal(clock.now(), 0);
+            clock.time = 100;
+            assert.equal(clock.now(), 100);
+            clock.time = 150;
+            assert.equal(clock.now(), 150);
+            clock.time = 25;
+            assert.equal(clock.now(), 25);
+            clock.time = -25;
+            assert.equal(clock.now(), -25);
+            clock.time = -100;
+            assert.equal(clock.now(), -100);
+        });
+    });
+
     suite('.running', () => {
         test('At creation clock is not running', () => {
             assert.equal(clock.running, false);
