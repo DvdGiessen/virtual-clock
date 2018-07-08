@@ -59,6 +59,14 @@ export default class VirtualClock {
                 Object.defineProperty(this, prop, { enumerable: false });
             }
         }
+
+        // Bind methods to this object
+        for (const prop of Object.getOwnPropertyNames(VirtualClock.prototype)) {
+            const descriptor = Object.getOwnPropertyDescriptor(VirtualClock.prototype, prop);
+            if(descriptor && 'value' in descriptor && typeof descriptor.value === 'function') {
+                Object.defineProperty(this, prop, { value: descriptor.value.bind(this) });
+            }
+        }
     }
 
     // Methods
