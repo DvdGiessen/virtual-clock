@@ -8,6 +8,19 @@
     <meta name="author" content="DvdGiessen"/>
     <meta name="keywords" content="virtual-clock clock timer stopwatch settimout setinterval virtual time timing timeout interval duration event hrtime hpet javascript npm nodejs browser es6 flow typescript"/>
     <style type="text/css">
+        html {
+            max-width: 70ch;
+            padding: 2ch;
+            margin: auto;
+            color: #333;
+            font-size: 1.2em;
+        }
+        code {
+            white-space: pre-wrap;
+        }
+        code .comment {
+            color: #999;
+        }
     </style>
 </head>
 <body>
@@ -49,7 +62,7 @@
         compatible with both browser and Node.js environments.
     </p>
     <h2>Usage example</h2>
-    <pre><code>
+    <code id="example-code">
     import VirtualClock from &apos;virtual-clock&apos;;
     // or
     const VirtualClock = require(&apos;virtual-clock&apos;).default;
@@ -108,83 +121,83 @@
     // We can keep adjusting properties; time listeners will fire as expected
     clock.minimum += 1000;
     clock.rate *= 2;
-    </code></pre>
+    </code>
     <h2>API</h2>
-    <pre><code>
-    class VirtualClock {
-        /**
-        * Starts running the clock. Does nothing when clock was already running.
-        */
-        start(): VirtualClock;
+    <code style="font-size: 0.75em;">class VirtualClock {
+    <span class="comment">/**
+     * Starts running the clock. Does nothing when clock was already running.
+     */</span>
+    start(): VirtualClock;
 
-        /**
-        * Stops running the clock. Does nothing when clock was not running.
-        */
-        stop(): VirtualClock;
+    <span class="comment">/**
+     * Stops running the clock. Does nothing when clock was not running.
+     */</span>
+    stop(): VirtualClock;
 
-        /**
-        * Attaches an event listener.
-        *
-        * Supported events: start, stop, settime, setrunning, setrate, setminimum, setmaximum, setloop
-        */
-        on(event: string, callback: () =&gt; mixed): VirtualClock;
+    <span class="comment">/**
+     * Attaches an event listener.
+     *
+     * Supported events:
+     * start, stop, settime, setrunning, setrate, setminimum, setmaximum, setloop
+     */</span>
+    on(event: string, callback: () =&gt; mixed): VirtualClock;
 
-        /**
-        * Detaches a previously attached event listener.
-        */
-        off(event: string, callback: () =&gt; mixed): VirtualClock;
+    <span class="comment">/**
+     * Detaches a previously attached event listener.
+     */</span>
+    off(event: string, callback: () =&gt; mixed): VirtualClock;
 
-        /**
-        * Triggers an attached event listener.
-        */
-        trigger(event: string, ...args: mixed[]): VirtualClock;
+    <span class="comment">/**
+     * Triggers an attached event listener.
+     */</span>
+    trigger(event: string, ...args: mixed[]): VirtualClock;
 
-        /**
-        * Attaches a time listener which fires once after the specified clock time has passed.
-        */
-        onceAt(time: number, callback: () =&gt; mixed): VirtualClock;
+    <span class="comment">/**
+     * Attaches a time listener which fires once after the specified clock time has passed.
+     */</span>
+    onceAt(time: number, callback: () =&gt; mixed): VirtualClock;
 
-        /**
-        * Attaches a time listener which fires every time the specified clock time has passed.
-        */
-        alwaysAt(time: number, callback: () =&gt; mixed): VirtualClock;
+    <span class="comment">/**
+     * Attaches a time listener which fires every time the specified clock time has passed.
+     */</span>
+    alwaysAt(time: number, callback: () =&gt; mixed): VirtualClock;
 
-        /**
-        * Detaches a previously attached time listener. If multiple listeners match, all are removed.
-        */
-        removeAt(time: number, callback: () =&gt; mixed): VirtualClock;
+    <span class="comment">/**
+     * Detaches a previously attached time listener.
+     * If multiple listeners match, all are removed.
+     */</span>
+    removeAt(time: number, callback: () =&gt; mixed): VirtualClock;
 
-        /**
-        * The current clock time.
-        */
-        time: number;
+    <span class="comment">/**
+     * The current clock time.
+     */</span>
+    time: number;
 
-        /**
-        * Whether the clock is currently running.
-        */
-        running: boolean;
+    <span class="comment">/**
+     * Whether the clock is currently running.
+     */</span>
+    running: boolean;
 
-        /**
-        * The current rate (relative to real time) the clock runs at.
-        */
-        rate: number;
+    <span class="comment">/**
+     * The current rate (relative to real time) the clock runs at.
+     */</span>
+    rate: number;
 
-        /**
-        * The minimum limit for time on the clock.
-        */
-        minimum: number;
+    <span class="comment">/**
+     * The minimum limit for time on the clock.
+     */</span>
+    minimum: number;
 
-        /**
-        * The maximum limit for time on the clock.
-        */
-        maximum: number;
+    <span class="comment">/**
+     * The maximum limit for time on the clock.
+     */</span>
+    maximum: number;
 
-        /**
-        * Whether the clock will loop around after reaching the maximum.
-        */
-        loop: boolean;
-    }
-    </code></pre>
+    <span class="comment">/**
+     * Whether the clock will loop around after reaching the maximum.
+     */</span>
+    loop: boolean;
+}</code>
     <p>
         Note that all methods return the called object to allow for method chaining.
     </p>
@@ -202,5 +215,231 @@
         <code>virtual-clock</code> is freely distributable under the terms of the
         <a href="https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE">MIT license</a>.
     </p>
+    <!-- The following scripts are all for the RunKit integration. -->
+    <script id="script-pako" src="https://unpkg.com/pako/dist/pako.min.js" defer></script>
+    <script id="script-runkit" src="https://embed.runkit.com" data-node-version="*" data-element-id="example-code" defer></script>
+    <script>
+        // Only execute if RunKit loads
+        document.getElementById('script-runkit').addEventListener('load', function() {
+            // RunKit doesn't support the "import" syntax, so we comment it out
+            const exampleCode = document.getElementById('example-code').childNodes.item(0);
+            exampleCode.insertData(exampleCode.data.indexOf('import'), '// ');
+
+            // The render loop should be adjusted for Node.js
+            const codeRenderLoopOffset = exampleCode.data.indexOf('let outputElement')
+            exampleCode.insertData(codeRenderLoopOffset, '/*');
+            exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/\n// In RunKit, we can view the clock object directly.\nconsole.log(clock);');
+
+            // Helper for extracting source of a function, which allows us to
+            // write pure functions instead of escaping them in strings
+            const getFunctionSource = func =>
+                func
+                .toString()
+                .replace(/^(?:function(?:\s+[^\(\s]+)\s*\(\s*\)|\(\s*\)\s*=>)\s*\{([\S\s]+)\}$/g, '$1')
+                .replace(/^\s+/mg, '')
+                .replace(/\/\/ [^\n]+$/mg, '')
+                .replace(/\s+/g, ' ');
+
+            // Register a custom viewer of clocks for RunKit
+            this.dataset.preamble = getFunctionSource(() => {
+                // Operate in anonymous scope so we're not poluting the global namespace
+                (() => {
+                    // Load dependencies
+                    const { ValueViewerSymbol } = require('@runkit/value-viewer');
+                    const crypto = require('crypto');
+
+                    // We only operate if virtual-clock is required
+                    // To do so, we Proxy require() so we can enchance the VirtualClock object once it is loaded
+                    require = new Proxy(require, {
+                        apply: (target, thisArg, args) => {
+                            const result = target.apply(thisArg, args);
+                            if (args[0] === 'virtual-clock') {
+                                result.default = new Proxy(result.default, {
+                                    // We enhance the constructor of VirtualClock
+                                    construct: (constructorTarget, constructorArgs) => {
+                                        // Open a RunKit endpoint which will be used for updating clcoks via Server-Sent Events
+                                        if (!exports.endpoint) {
+                                            exports.endpoint = (request, response) => {
+                                                // Unique ID for this response object
+                                                const responseId = crypto.randomBytes(32).toString('hex');
+
+                                                // Set up headers for SSE
+                                                response.writeHead(200, {
+                                                    'Access-Control-Allow-Origin': '*',
+                                                    'Content-Type': 'text/event-stream',
+                                                    'Cache-Control': 'no-cache',
+                                                    'Connection': 'keep-alive',
+                                                });
+
+                                                // For each clock, send the initial state
+                                                for (const clockId in exports.endpoint.clocks) {
+                                                    const clock = exports.endpoint.clocks[clockId];
+                                                    // Deleted 'event:' + clockId + '\n'
+                                                    // since RunKit appearantly starts a separate instance for handling endpoint request so ID's are not synced
+                                                    response.write('data:' + JSON.stringify({
+                                                        time: clock.time,
+                                                        running: clock.running,
+                                                        rate: clock.rate,
+                                                        minimum: clock.minimum,
+                                                        maximum: clock.maximum,
+                                                        loop: clock.loop,
+                                                    }) + '\n\n');
+                                                }
+
+                                                // Write 2KB of additional empty data, used for ensuring buffers are flushed
+                                                response.write(':' + ' '.repeat(2048) + '\n');
+
+                                                // Register the response so it may receive new events
+                                                exports.endpoint.openConnections[responseId] = response;
+
+                                                // Set up termination for this response after a timeout
+                                                setTimeout(
+                                                    () => {
+                                                        delete exports.endpoint.openConnections[responseId];
+                                                        response.end();
+                                                    },
+                                                    55 * 1000 // RunKit restriction: Requests must terminate within 60 seconds
+                                                );
+                                            };
+
+                                            // List of clocks, used for transmitting initial state
+                                            exports.endpoint.clocks = {};
+
+                                            // List of open connection, used for sending events
+                                            exports.endpoint.openConnections = {};
+
+                                            // Function for sending event to all open connections
+                                            exports.endpoint.sendEvent = (clockId, data) => {
+                                                for (responseId in exports.endpoint.openConnections) {
+                                                    const response = exports.endpoint.openConnections[responseId];
+                                                    // Deleted 'event:' + clockId + '\n'
+                                                    // since RunKit appearantly starts a separate instance for handling endpoint request so ID's are not synced
+                                                    response.write('data:' + JSON.stringify(data) + '\n\n');
+                                                    response.flushHeaders();
+                                                }
+                                            };
+                                        }
+
+                                        // Construct clock
+                                        const clock = new constructorTarget(...constructorArgs);
+                                        const clockId = crypto.randomBytes(8).toString('hex');
+                                        exports.endpoint.clocks[clockId] = clock;
+
+                                        // Send events on clock state changes
+                                        for (const prop of ['time', 'running', 'rate', 'minimum', 'maximum', 'loop']) {
+                                            clock.on('set' + prop, () => exports.endpoint.sendEvent(clockId, { [prop]: clock[prop] }));
+                                        }
+
+                                        // Add custom value viewer
+                                        clock[ValueViewerSymbol] = {
+                                            title: 'VirtualClock',
+                                            HTML: ___clockRendererInit___
+                                                .replace('%%%rawClockId%%%', clockId)
+                                                .replace('__endPointUrl__', JSON.stringify(process.env.RUNKIT_ENDPOINT_URL))
+                                                .replace('__clockId__', JSON.stringify(clockId)),
+                                        };
+                                        return clock;
+                                    },
+                                });
+                            }
+                            return result;
+                        },
+                    });
+                })();
+            }).replace(
+                '___clockRendererInit___',
+                JSON.stringify('<div id="virtualclock-%%%rawClockId%%%"></div><script>' + getFunctionSource(() => {
+                    // If our renderer is not yet loaded, do so now
+                    if (!window.virtualClockRenderer) {
+                        // Set up temporary queueing function for until real renderer is available
+                        window.virtualClockRenderer = clockId => window.virtualClockRenderer.queue.push(clockId);
+                        window.virtualClockRenderer.queue = [];
+
+                        // Await DOM ready before we insert the new script
+                        document.addEventListener('DOMContentLoaded', () => {
+                            // Add a new script to the page to load virtual-clock
+                            const script = document.createElement('script');
+                            script.async = true;
+                            script.onload = () => {
+                                // Alias the loaded virtual-clock
+                                const VirtualClock = window.virtualClock.default;
+
+                                // Store the queue of previously added clocks
+                                const queue = window.virtualClockRenderer.queue;
+
+                                // Start listening to events
+                                const events = new EventSource(__endPointUrl__);
+
+                                // Renderer function that sets up a clock
+                                window.virtualClockRenderer = clockId => {
+                                    // Instanciate the clock
+                                    const clock = new VirtualClock();
+
+                                    // Listen to events setting the clock state
+                                    // Replaced clockId with 'message'
+                                    // since RunKit appearantly starts a separate instance for handling endpoint request so ID's are not synced
+                                    events.addEventListener('message', event => {
+                                        const eventData = JSON.parse(event.data);
+                                        for(const prop in eventData) {
+                                            clock[prop] = eventData[prop];
+                                        }
+                                    }, { passive: true });
+
+                                    // Set up rendering of the clock state
+                                    let outputElement = document.getElementById('virtualclock-' + clockId);
+                                    (function loop() {
+                                        outputElement.textContent =
+                                            'Time: ' + (clock.time / 1000).toFixed(5) +
+                                            ', running: ' + (clock.running ? 'true' : 'false') +
+                                            ', rate: ' + clock.rate +
+                                            ', minimum: ' + (clock.minimum / 1000).toFixed(5) +
+                                            ', maximum: ' + (clock.maximum / 1000).toFixed(5) +
+                                            ', loop: ' + (clock.loop ? 'true' : 'false');
+                                        window.requestAnimationFrame(loop);
+                                    })();
+                                };
+
+                                // Register all clocks that were previously queued
+                                for (clockId of queue) {
+                                    window.virtualClockRenderer(clockId);
+                                }
+                            };
+                            script.src = 'https://unpkg.com/virtual-clock';
+                            document.body.append(script);
+                        }, false);
+                    }
+
+                    // Register the clock
+                    window.virtualClockRenderer(__clockId__);
+                }) + '</' + 'script>')
+            );
+
+            // Compress the preamble since RunKit breaks when its too big
+            this.dataset.preamble = getFunctionSource(() => {
+                eval(require('zlib').inflateSync(Buffer.from(__source__, 'base64')).toString('ascii'));
+            }).replace('__source__', JSON.stringify(btoa(window.pako.deflate(this.dataset.preamble, { to: 'string' }))));
+
+            // Support dynamic resizing of the RunKit iframe
+            window.addEventListener('message', function(e) {
+                if (e.origin !== 'https://runkit.com') return;
+                let data;
+                try {
+                    data = JSON.parse(e.data);
+                } catch (e) {
+                    return false;
+                }
+                if (data.context !== 'iframe.resize') {
+                    return false;
+                }
+                var iframe = document.querySelector('iframe[src="' + data.src + '"]');
+                if (!iframe) {
+                    return false;
+                }
+                if (data.height) {
+                    iframe.height = data.height;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
