@@ -8,18 +8,37 @@
     <meta name="author" content="DvdGiessen"/>
     <meta name="keywords" content="virtual-clock clock timer stopwatch settimout setinterval virtual time timing timeout interval duration event hrtime hpet javascript npm nodejs browser es6 flow typescript"/>
     <style type="text/css">
-        html {
-            max-width: 70ch;
-            padding: 2ch;
+        body {
+            max-width: 72ch;
+            padding: 3ch;
             margin: auto;
             color: #333;
             font-size: 1.2em;
+        }
+        body {
+            overflow-x: hidden;
         }
         code {
             white-space: pre-wrap;
         }
         code .comment {
             color: #999;
+        }
+        @media (prefers-color-scheme: dark) {
+            :root, html {
+                background-color: black;
+                filter: invert(100%);
+            }
+            body {
+                background-color: white;
+            }
+            * {
+                background-color: inherit;
+            }
+            img, video, embed,  svg {
+                background-color: black;
+                filter: invert(100%);
+            }
         }
     </style>
 </head>
