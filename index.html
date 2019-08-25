@@ -1,148 +1,156 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8" />
-    <title>virtual-clock</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A small library for configurable, high-resolution, high-performance virtual clocks"/>
-    <meta name="author" content="DvdGiessen"/>
-    <meta name="keywords" content="virtual-clock clock timer stopwatch settimout setinterval virtual time timing timeout interval duration event hrtime hpet javascript npm nodejs browser es6 flow typescript"/>
-    <style type="text/css">
-        body {
-            max-width: 72ch;
-            padding: 3ch;
-            margin: auto;
-            color: #333;
-            font-size: 1.2em;
+<meta charset="UTF-8" />
+<title>virtual-clock</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="description" content="A tiny library for configurable virtual clocks"/>
+<meta name="author" content="DvdGiessen"/>
+<meta name="keywords" content="virtual-clock clock timer stopwatch settimout setinterval virtual time timing timeout interval duration event hrtime hpet javascript npm nodejs browser es6 flow typescript"/>
+<style type="text/css">
+    body {
+        max-width: 72ch;
+        padding: 3ch;
+        margin: auto;
+        color: #333;
+        font-size: 1.2em;
+    }
+    body {
+        overflow-x: hidden;
+    }
+    code {
+        white-space: pre-wrap;
+    }
+    code .comment {
+        color: #999;
+    }
+    code.runkit + code.runkit {
+        display: block;
+        height: 0;
+        overflow: hidden;
+    }
+    @media (prefers-color-scheme: dark) {
+        :root, html {
+            background-color: black;
+            filter: invert(100%);
         }
         body {
-            overflow-x: hidden;
+            background-color: white;
         }
-        code {
-            white-space: pre-wrap;
+        * {
+            background-color: inherit;
         }
-        code .comment {
-            color: #999;
+        img, video, embed,  svg {
+            background-color: black;
+            filter: invert(100%);
         }
-        @media (prefers-color-scheme: dark) {
-            :root, html {
-                background-color: black;
-                filter: invert(100%);
-            }
-            body {
-                background-color: white;
-            }
-            * {
-                background-color: inherit;
-            }
-            img, video, embed,  svg {
-                background-color: black;
-                filter: invert(100%);
-            }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-    <h1>virtual-clock</h1>
-    <p>
-        <em>A small library for configurable, high-resolution, high-performance virtual clocks</em>
-    </p>
-    <p>
-        <a href="https://www.npmjs.com/package/virtual-clock"><img src="https://img.shields.io/npm/v/virtual-clock.svg" alt="npm"></a>
-        <a href="https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/virtual-clock.svg" alt="license"></a>
-        <a href="https://david-dm.org/DvdGiessen/virtual-clock"><img src="https://img.shields.io/david/DvdGiessen/virtual-clock.svg" alt="dependencies" ></a>
-        <a href="https://codecov.io/gh/DvdGiessen/virtual-clock"><img src="https://img.shields.io/codecov/c/github/DvdGiessen/virtual-clock/master.svg" alt="coverage"></a>
-        <a href="https://www.codacy.com/app/github_94/virtual-clock"><img src="https://img.shields.io/codacy/grade/bae573f4dab14b01af199ad21c810318/master.svg" alt="code quality"></a>
-        <a href="https://travis-ci.org/DvdGiessen/virtual-clock"><img src="https://img.shields.io/travis/DvdGiessen/virtual-clock/master.svg" alt="build status"></a>
-    </p>
-    <h2>Overview</h2>
-    <p>
-        This small and efficient library provides configurable virtual clocks for
-        tracking time in for example simulations, games, media applications, or even
-        just a simple stopwatch.
-    </p>
-    <p>
-        Virtual clocks can be started and stopped, the rate at which time flows can be
-        altered and even be made negative, causing time to flow backwards. Time can be
-        limited by a minimum and maximum value, and when both a minimum and maximum are
-        defined time may be set to loop around. Time listeners may be attached which
-        will fire when a given (absolute) time on the clock is passed, without having
-        to worry about adjusting timeouts for pauses, rate changes or other conditions.
-    </p>
-    <p>
-        <code>virtual-clock</code> uses high resolution time data for its virtualized clocks,
-        independent of system clock drift (for example when being skewed by software
-        like NTP). No timers are used for calculating the virtual clock time, instead
-        some clever math is used to calculate time whenever it is requested.
-    </p>
-    <p>
-        The library has extensive test coverage for all functionality and edge cases,
-        provides type annotations for both TypeScript and Flow users, and is fully
-        compatible with both browser and Node.js environments.
-    </p>
-    <h2>Usage example</h2>
-    <code id="example-code">
-    import VirtualClock from &apos;virtual-clock&apos;;
-    // or
-    const VirtualClock = require(&apos;virtual-clock&apos;).default;
+<h1>virtual-clock</h1>
+<p>
+    <em>A tiny library for configurable virtual clocks</em>
+</p>
+<p>
+    <a href="https://www.npmjs.com/package/virtual-clock"><img src="https://badgen.net/npm/v/virtual-clock" alt="npm"></a>
+    <a href="https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE"><img src="https://badgen.net/github/license/dvdgiessen/virtual-clock" alt="license"></a>
+    <a href="https://david-dm.org/DvdGiessen/virtual-clock"><img src="https://badgen.net/david/dep/dvdgiessen/virtual-clock" alt="dependencies" ></a>
+    <a href="https://codecov.io/gh/DvdGiessen/virtual-clock"><img src="https://badgen.net/codecov/c/github/dvdgiessen/virtual-clock" alt="coverage"></a>
+    <a href="https://www.codacy.com/app/github_94/virtual-clock"><img src="https://badgen.net/codacy/grade/bae573f4dab14b01af199ad21c810318" alt="code quality"></a>
+    <a href="https://travis-ci.org/DvdGiessen/virtual-clock"><img src="https://travis-ci.org/DvdGiessen/virtual-clock.svg?branch=master" alt="build status"></a>
+</p>
+<h2>Overview</h2>
+<p>
+    <code>virtual-clock</code> is a tiny library for tracking time, for example in games,
+    simulations, visualizations, media applications, or even just a stopwatch app.
+</p>
+<p>
+    Virtual clocks can be paused and resumed, be sped up, down, or even made to go
+    backwards, can be limited to not go beyond a certain minimum or maximum value,
+    or to loop around whenever the set minimum or maximum value is reached.
+</p>
+<p>
+    Clocks can register callbacks which should fire at specific clock times, either
+    once or every time the clock reaches the specified time. Event listeners can
+    also be attached for specific changes in state, for example to be notified when
+    the clock is started or stopped.
+</p>
+<p>
+    A VirtualClock's time is calculated using high resolution time data, meaning
+    clock time is not affected by imprecision in JavaScript's timers, system clock
+    drift or skewing by software like NTP. This makes it ideal for use in for
+    example graphics render loops where the timing should not be bound to the speed
+    at which the software runs.
+</p>
+<p>
+    The library has extensive test coverage for all functionality and edge cases,
+    provides type annotations for both TypeScript and Flow users, and is fully
+    compatible with both browser and Node.js environments.
+</p>
 
-    // Create a new clock
-    let clock = new VirtualClock;
+<h2>Usage example</h2>
+<code class="runkit" id="example-code">import VirtualClock from &apos;virtual-clock&apos;;
+// or
+const VirtualClock = require(&apos;virtual-clock&apos;).default;
 
-    // At instanciation, the clock is stopped at time 0.
-    console.log(&apos;Initial clock time: &apos; + clock.time);
+// Create a new clock
+let clock = new VirtualClock;
 
-    // The `time` property may be queried at any time, for example in a render loop
-    let outputElement = document.getElementById(&apos;output&apos;);
-    (function loop() {
-        outputElement.textContent = (clock.time / 1000).toFixed(5);
-        window.requestAnimationFrame(loop);
-    })();
+// At instanciation, the clock is stopped at time 0.
+console.log(&apos;Initial clock time: &apos; + clock.time);
 
-    // Start the clock by calling .start()
-    clock.start();
+// The `time` property may be queried at any time, for example in a render loop
+let outputElement = document.getElementById(&apos;output&apos;);
+(function loop() {
+    outputElement.textContent = (clock.time / 1000).toFixed(5);
+    window.requestAnimationFrame(loop);
+})();
 
-    // Or toggling the `running` property
-    clock.running = true;
+// Start the clock by calling .start()
+clock.start();
 
-    // Speed up the the flow of time
-    clock.rate = 2.0;
+// Or toggling the `running` property
+clock.running = true;
 
-    // Or wind back the clock
-    clock.rate = -1.0;
+// Speed up the the flow of time
+clock.rate = 2.0;
 
-    // By default, time is limited between -Infinity and Infinity
-    console.log(&apos;Default bounds: &apos; + clock.minimum + &apos; - &apos; + clock.maximum);
+// Or wind back the clock
+clock.rate = -1.0;
 
-    // But for various cases it might be useful to set a finite bound
-    clock.minimum = 0;
-    clock.maximum = 10 * 1000;
+// By default, time is limited between -Infinity and Infinity
+console.log(&apos;Default bounds: &apos; + clock.minimum + &apos; - &apos; + clock.maximum);
 
-    // When both minimum and maximum are set to non-infinites, we may loop time
-    clock.loop = true;
+// But for various cases it might be useful to set a finite bound
+clock.minimum = 0;
+clock.maximum = 10 * 1000;
 
-    // Event listeners may be attached to notice changes
-    clock.on(&apos;start&apos;, () =&gt; {
-        console.log(&apos;The clock has been started!&apos;);
-    });
-    clock.on(&apos;setrate&apos;, () =&gt; {
-        console.log(&apos;The flow rate of time was set!&apos;);
-    });
+// When both minimum and maximum are set to non-infinites, we may loop time
+clock.loop = true;
 
-    // Time listeners can be attached to specific clock times
-    clock.onceAt(9 * 1000, () =&gt; {
-        console.log(&apos;I\&apos;ll fire once at 9, and then never again!&apos;);
-    });
-    clock.alwaysAt(5 * 1000, () =&gt; {
-        console.log(&apos;I\&apos;ll fire every time the clock is at 5!&apos;);
-    });
+// Event listeners may be attached to notice changes
+clock.on(&apos;start&apos;, () =&gt; {
+    console.log(&apos;The clock has been started!&apos;);
+});
+clock.on(&apos;setrate&apos;, () =&gt; {
+    console.log(&apos;The flow rate of time was set!&apos;);
+});
 
-    // We can keep adjusting properties; time listeners will fire as expected
-    clock.minimum += 1000;
-    clock.rate *= 2;
-    </code>
-    <h2>API</h2>
-    <code style="font-size: 0.75em;">class VirtualClock {
+// Time listeners can be attached to specific clock times
+clock.onceAt(9 * 1000, () =&gt; {
+    console.log(&apos;I\&apos;ll fire once at 9, and then never again!&apos;);
+});
+clock.alwaysAt(5 * 1000, () =&gt; {
+    console.log(&apos;I\&apos;ll fire every time the clock is at 5!&apos;);
+});
+
+// We can keep adjusting properties; time listeners will fire as expected
+clock.minimum += 1000;
+clock.rate *= 2;
+</code>
+<h2>API</h2>
+<code style="font-size: 0.75em;">class VirtualClock {
     <span class="comment">/**
      * Starts running the clock. Does nothing when clock was already running.
      */</span>
@@ -217,40 +225,88 @@
      */</span>
     loop: boolean;
 }</code>
-    <p>
-        Note that all methods return the called object to allow for method chaining.
-    </p>
-    <h2>Issues and contributing</h2>
-    <p>
-        If you have any issues with <code>virtual-clock</code>, first check the <a href="https://github.com/DvdGiessen/virtual-clock/issues">issue tracker</a> to see whether it was
-        already reported by someone else. If not, go ahead and <a href="https://github.com/DvdGiessen/virtual-clock/issues/new">create a new issue</a>. Try to include as much
-        information (version of the library, example code to reproduce) as possible.
-    </p>
-    <p>
-        If you want to contribute, feel free to open a pull request on <a href="https://github.com/DvdGiessen/virtual-clock">GitHub</a>!
-    </p>
-    <h2>License</h2>
-    <p>
-        <code>virtual-clock</code> is freely distributable under the terms of the
-        <a href="https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE">MIT license</a>.
-    </p>
-    <!-- The following scripts are all for the RunKit integration. -->
-    <script id="script-pako" src="https://unpkg.com/pako/dist/pako.min.js" defer></script>
-    <script id="script-runkit" src="https://embed.runkit.com" data-node-version="*" data-element-id="example-code" defer></script>
-    <script>
-        // Only execute if RunKit loads
-        document.getElementById('script-runkit').addEventListener('load', function() {
-            // RunKit doesn't support the "import" syntax, so we comment it out
-            const exampleCode = document.getElementById('example-code').childNodes.item(0);
-            exampleCode.insertData(exampleCode.data.indexOf('import'), '// ');
+<p>
+    Note that all methods return the called object to allow for method chaining.
+</p>
+<h2>Issues and contributing</h2>
+<p>
+    If you have any issues with <code>virtual-clock</code>, first check the
+    <a href="https://github.com/DvdGiessen/virtual-clock/issues">issue tracker</a>
+    to see whether it was already reported by someone else. If not, go ahead and
+    <a href="https://github.com/DvdGiessen/virtual-clock/issues/new">create a new issue</a>.
+    Try to include as much information (version of the library, example code to reproduce) as possible.
+</p>
+<p>
+    If you want to contribute, feel free to open a pull request on
+    <a href="https://github.com/DvdGiessen/virtual-clock">GitHub</a>!
+</p>
+<h2>License</h2>
+<p>
+    <code>virtual-clock</code> is freely distributable under the terms of the
+    <a href="https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE">MIT license</a>.
+</p>
+<!-- The following scripts are all for the RunKit integration. -->
+<script id="script-pako" src="https://unpkg.com/pako/dist/pako.min.js" defer></script>
+<script id="script-runkit" src="https://embed.runkit.com" data-node-version="*" data-element-id="example-code" defer></script>
+<script>
+    // Progressive enhancement: All this code is only executed if the RunKit JavaScript actually loads
+    document.getElementById('script-runkit').addEventListener('load', function() {
+        // Create a clone of the example code which will be enhanced by RunKit
+        const originalElement = document.getElementById(this.dataset.elementId);
+        const clonedElement = originalElement.cloneNode(true);
+        originalElement.removeAttribute('id');
 
-            // The render loop should be adjusted for Node.js
-            const codeRenderLoopOffset = exampleCode.data.indexOf('let outputElement')
-            exampleCode.insertData(codeRenderLoopOffset, '/*');
-            exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/\n// In RunKit, we can view the clock object directly.\nconsole.log(clock);');
+        // Note: We use CSS classes instead of styles set by JS so both elements are affected at the same time,
+        // ensuring everything should take only a single reflow operation.
+        // Note: By placing the clone after the visible original, if the browser does render a frame with
+        // an incomplete reflow, at least it'll be at the bottom of the page, hopefully below the fold.
+        originalElement.parentNode.insertBefore(clonedElement, originalElement.nextSibling);
 
-            // Helper for extracting source of a function, which allows us to
-            // write pure functions instead of escaping them in strings
+        // Replace the original element with the RunKit element when loading completes and add a fun little
+        // typing effect to draw the users attention to the interactive part of the page.
+        window.activateRunkitExampleCode = () => {
+            const typeEffectTarget = originalElement.previousElementSibling.childNodes.item(0);
+            const typeEffectText = 'Interactive ';
+            const typeEffect = (offset, text) => {
+                if (text.length > 0) {
+                    typeEffectTarget.insertData(offset, text.substring(0, 1));
+                    setTimeout(() => typeEffect(offset + 1, text.substring(1)), 100);
+                } else {
+                    typeEffectTarget.replaceData(
+                        typeEffectText.length,
+                        1,
+                        typeEffectTarget.data.substring(
+                            typeEffectText.length,
+                            typeEffectText.length + 1
+                        ).toLowerCase()
+                    );
+                }
+            };
+            typeEffect(0, typeEffectText);
+            originalElement.parentNode.removeChild(originalElement);
+        };
+        this.dataset.loadCallback = 'activateRunkitExampleCode';
+
+        // RunKit doesn't support the "import" syntax, so we comment it out
+        const exampleCode = clonedElement.childNodes.item(0);
+        exampleCode.insertData(exampleCode.data.indexOf('import'), '// ');
+
+        // The render loop should be adjusted for Node.js
+        const codeRenderLoopOffset = exampleCode.data.indexOf('let outputElement')
+        exampleCode.insertData(codeRenderLoopOffset, '/*');
+        exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/\nconsole.log(clock);');
+
+        // Check if pako is available. Without it, the code we generate
+        // is too big for RunKit and we may as well just skip it
+        if (window.pako) {
+            // Add note on viewing the clock right within RunKit
+            exampleCode.insertData(
+                exampleCode.data.indexOf('console.log(clock);', codeRenderLoopOffset),
+                '// In RunKit, clock objects can be seen live in the console\n'
+            );
+
+            // Helper for extracting source of a function, which allows us to write
+            // pure functions instead of escaping them in strings
             const getFunctionSource = func =>
                 func
                 .toString()
@@ -294,7 +350,8 @@
                                                 for (const clockId in exports.endpoint.clocks) {
                                                     const clock = exports.endpoint.clocks[clockId];
                                                     // Deleted 'event:' + clockId + '\n'
-                                                    // since RunKit appearantly starts a separate instance for handling endpoint request so ID's are not synced
+                                                    // since RunKit appearantly starts a separate instance
+                                                    // for handling endpoint request so ID's are not synced
                                                     response.write('data:' + JSON.stringify({
                                                         time: clock.time,
                                                         running: clock.running,
@@ -332,7 +389,8 @@
                                                 for (responseId in exports.endpoint.openConnections) {
                                                     const response = exports.endpoint.openConnections[responseId];
                                                     // Deleted 'event:' + clockId + '\n'
-                                                    // since RunKit appearantly starts a separate instance for handling endpoint request so ID's are not synced
+                                                    // since RunKit appearantly starts a separate instance
+                                                    // for handling endpoint request so ID's are not synced
                                                     response.write('data:' + JSON.stringify(data) + '\n\n');
                                                     response.flushHeaders();
                                                 }
@@ -396,7 +454,8 @@
 
                                     // Listen to events setting the clock state
                                     // Replaced clockId with 'message'
-                                    // since RunKit appearantly starts a separate instance for handling endpoint request so ID's are not synced
+                                    // since RunKit appearantly starts a separate instance
+                                    // for handling endpoint request so ID's are not synced
                                     events.addEventListener('message', event => {
                                         const eventData = JSON.parse(event.data);
                                         for(const prop in eventData) {
@@ -437,28 +496,8 @@
             this.dataset.preamble = getFunctionSource(() => {
                 eval(require('zlib').inflateSync(Buffer.from(__source__, 'base64')).toString('ascii'));
             }).replace('__source__', JSON.stringify(btoa(window.pako.deflate(this.dataset.preamble, { to: 'string' }))));
-
-            // Support dynamic resizing of the RunKit iframe
-            window.addEventListener('message', function(e) {
-                if (e.origin !== 'https://runkit.com') return;
-                let data;
-                try {
-                    data = JSON.parse(e.data);
-                } catch (e) {
-                    return false;
-                }
-                if (data.context !== 'iframe.resize') {
-                    return false;
-                }
-                var iframe = document.querySelector('iframe[src="' + data.src + '"]');
-                if (!iframe) {
-                    return false;
-                }
-                if (data.height) {
-                    iframe.height = data.height;
-                }
-            });
-        });
-    </script>
+        }
+    });
+</script>
 </body>
 </html>
