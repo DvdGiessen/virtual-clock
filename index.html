@@ -247,12 +247,12 @@ clock.rate *= 2;
 </p>
 <!-- The following scripts are all for the RunKit integration. -->
 <script id="script-pako" src="https://unpkg.com/pako/dist/pako.min.js" defer></script>
-<script id="script-runkit" src="https://embed.runkit.com" data-node-version="*" data-element-id="example-code" defer></script>
+<script id="script-runkit" src="https://embed.runkit.com" defer></script>
 <script>
     // Progressive enhancement: All this code is only executed if the RunKit JavaScript actually loads
     document.getElementById('script-runkit').addEventListener('load', function() {
         // Create a clone of the example code which will be enhanced by RunKit
-        const originalElement = document.getElementById(this.dataset.elementId);
+        const originalElement = document.getElementById('example-code');
         const clonedElement = originalElement.cloneNode(true);
         originalElement.removeAttribute('id');
 
@@ -285,7 +285,6 @@ clock.rate *= 2;
             typeEffect(0, typeEffectText);
             originalElement.parentNode.removeChild(originalElement);
         };
-        this.dataset.loadCallback = 'activateRunkitExampleCode';
 
         // RunKit doesn't support the "import" syntax, so we comment it out
         const exampleCode = clonedElement.childNodes.item(0);
@@ -296,8 +295,9 @@ clock.rate *= 2;
         exampleCode.insertData(codeRenderLoopOffset, '/*');
         exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/\nconsole.log(clock);');
 
-        // Check if pako is available. Without it, the code we generate
+        // Check if pako is available. Without it, the preamble code we generate
         // is too big for RunKit and we may as well just skip it
+        let preamble = '';
         if (window.pako) {
             // Add note on viewing the clock right within RunKit
             exampleCode.insertData(
@@ -316,7 +316,7 @@ clock.rate *= 2;
                 .replace(/\s+/g, ' ');
 
             // Register a custom viewer of clocks for RunKit
-            this.dataset.preamble = getFunctionSource(() => {
+            preamble = getFunctionSource(() => {
                 // Operate in anonymous scope so we're not poluting the global namespace
                 (() => {
                     // Load dependencies
@@ -493,10 +493,20 @@ clock.rate *= 2;
             );
 
             // Compress the preamble since RunKit breaks when its too big
-            this.dataset.preamble = getFunctionSource(() => {
+            preamble = getFunctionSource(() => {
                 eval(require('zlib').inflateSync(Buffer.from(__source__, 'base64')).toString('ascii'));
-            }).replace('__source__', JSON.stringify(btoa(window.pako.deflate(this.dataset.preamble, { to: 'string' }))));
+            }).replace('__source__', JSON.stringify(btoa(window.pako.deflate(preamble, { to: 'string' }))));
         }
+
+        // Build the Runkit workbook using all the things we've prepared
+        RunKit.createNotebook({
+            element: clonedElement,
+            source: clonedElement.textContent,
+            clearParentContents: true,
+            preamble: preamble,
+            onLoad: window.activateRunkitExampleCode,
+            nodeVersion: '*',
+        });
     });
 </script>
 </body>
