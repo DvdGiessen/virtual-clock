@@ -297,7 +297,7 @@ clock.rate *= 2;
         exampleCode.insertData(codeRenderLoopOffset, '// Note: Since this live example runs in Node.js this commented out.\n// There is a live view of the clock object in the console instead!\n/*');
         exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/');
         const consoleOutputComment = 'This outputs the clock object to the console below';
-        exampleCode.appendData('\n// ' + consoleOutputComment + '\nclock;\n\n// Try running this example code to see it in action!\n');
+        exampleCode.appendData('\n// ' + consoleOutputComment + '\nclock;\n\n// Try running this example code to see it in action!');
 
         // Check if pako is available. Without it, the preamble code we generate
         // is too big for RunKit and we may as well just skip it
