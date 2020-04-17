@@ -8,11 +8,6 @@ export default VirtualClock;
  */
 export declare class VirtualClock {
     /**
-     * Returns the current clock time. Alias for the `time` property for compatibility with the Clock interface.
-     */
-    now(): number;
-
-    /**
      * Starts running the clock. Does nothing when clock was already running.
      */
     start(): VirtualClock;

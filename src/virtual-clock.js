@@ -71,13 +71,6 @@ export default class VirtualClock {
 
     // Methods
     /**
-     * Returns the current clock time. Alias for the `time` property for compatibility with the Clock interface.
-     */
-    now(): number {
-        return this.time;
-    }
-
-    /**
      * Starts running the clock. Does nothing when clock was already running.
      */
     start(): VirtualClock {
