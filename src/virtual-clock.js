@@ -1,5 +1,4 @@
 // @flow
-'use strict';
 
 /**
  * A configurable virtual clock for tracking time.
@@ -63,7 +62,7 @@ export default class VirtualClock {
         // Bind methods to this object
         for (const prop of Object.getOwnPropertyNames(VirtualClock.prototype)) {
             const descriptor = Object.getOwnPropertyDescriptor(VirtualClock.prototype, prop);
-            if(descriptor && 'value' in descriptor && typeof descriptor.value === 'function') {
+            if (descriptor && 'value' in descriptor && typeof descriptor.value === 'function') {
                 Object.defineProperty(this, prop, { value: descriptor.value.bind(this) });
             }
         }
@@ -305,13 +304,13 @@ export default class VirtualClock {
             }
         }
 
-        if (hasRemoved) {
-            // Method chaining
-            return this;
-        } else {
+        if (!hasRemoved) {
             // When not found, throw an error
             throw new Error('Time listener not found');
         }
+
+        // Method chaining
+        return this;
     }
 
     // Getters
@@ -414,7 +413,11 @@ export default class VirtualClock {
      */
     set running(running: boolean): void {
         // Changing running state just calls start() or stop()
-        running ? this.start() : this.stop();
+        if (running) {
+            this.start();
+        } else {
+            this.stop();
+        }
     }
 
     /**

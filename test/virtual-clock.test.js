@@ -1,13 +1,13 @@
 import VirtualClock from '../src/virtual-clock';
 
-const assert = require('chai').assert;
-const lolex = require('lolex');
+const { assert } = require('chai');
+const fakeTimers = require('@sinonjs/fake-timers');
 const sinon = require('sinon');
 
 suite('VirtualClock', () => {
     let fakeTime;
     suiteSetup(() => {
-        fakeTime = lolex.install();
+        fakeTime = fakeTimers.install();
     });
 
     let clock;
@@ -623,7 +623,7 @@ suite('VirtualClock', () => {
             clock.start();
             assert(!callback.called);
             clock.time = 500;
-            fakeTime.tick(0); // Required to make lolex fire timeouts
+            fakeTime.tick(0); // Required to make fakeTimers fire timeouts
             assert(callback.calledOnce);
         });
         test('Setting time to time of single-fire time listener for a non-running clock fires it at clock start', () => {
@@ -634,7 +634,7 @@ suite('VirtualClock', () => {
             fakeTime.tick(0);
             assert(!callback.called);
             clock.start();
-            fakeTime.tick(0); // Required to make lolex fire timeouts
+            fakeTime.tick(0); // Required to make fakeTimers fire timeouts
             assert(callback.calledOnce);
         });
         test('Single-fire time listener correctly interacts with rate changes', () => {
@@ -805,7 +805,7 @@ suite('VirtualClock', () => {
             clock.start();
             assert(!callback.called);
             clock.time = 500;
-            fakeTime.tick(0); // Required to make lolex fire timeouts
+            fakeTime.tick(0); // Required to make fakeTimers fire timeouts
             assert(callback.calledOnce);
         });
         test('Setting time to time of always-fire time listener for a non-running clock fires it at clock start', () => {
@@ -816,7 +816,7 @@ suite('VirtualClock', () => {
             fakeTime.tick(0);
             assert(!callback.called);
             clock.start();
-            fakeTime.tick(0); // Required to make lolex fire timeouts
+            fakeTime.tick(0); // Required to make fakeTimers fire timeouts
             assert(callback.calledOnce);
         });
         test('Always-fire time listener correctly interacts with rate changes', () => {

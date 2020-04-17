@@ -1,11 +1,19 @@
 {
-    "presets": ["env", "flow"],
+    "presets": [
+        "@babel/preset-env",
+        "@babel/preset-flow"
+    ],
     "env": {
         "test": {
             "plugins": ["istanbul"]
         },
         "production": {
-            "plugins": ["transform-es2015-modules-umd"]
+            "plugins": [
+                "@babel/plugin-transform-modules-umd",
+                ["add-module-exports", {
+                    "addDefaultProperty": true
+                }]
+            ]
         }
     }
 }

@@ -13,6 +13,7 @@ all=warn
 unsafe-getters-setters=off
 
 [options]
+exact_by_default=true
 experimental.const_params=true
 include_warnings=true
 munge_underscores=true
