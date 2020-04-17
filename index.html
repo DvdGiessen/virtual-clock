@@ -294,17 +294,20 @@ clock.rate *= 2;
 
         // The render loop should be adjusted for Node.js
         const codeRenderLoopOffset = exampleCode.data.indexOf('let outputElement')
-        exampleCode.insertData(codeRenderLoopOffset, '/*');
-        exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/\nconsole.log(clock);');
+        exampleCode.insertData(codeRenderLoopOffset, '// Note: Since this live example runs in Node.js this commented out.\n// There is a live view of the clock object in the console instead!\n/*');
+        exampleCode.insertData(exampleCode.data.indexOf('();', codeRenderLoopOffset) + 3, '*/');
+        const consoleOutputComment = 'This outputs the clock object to the console below';
+        exampleCode.appendData('\n// ' + consoleOutputComment + '\nclock;\n\n// Try running this example code to see it in action!\n');
 
         // Check if pako is available. Without it, the preamble code we generate
         // is too big for RunKit and we may as well just skip it
         let preamble = '';
         if (window.pako) {
             // Add note on viewing the clock right within RunKit
-            exampleCode.insertData(
-                exampleCode.data.indexOf('console.log(clock);', codeRenderLoopOffset),
-                '// In RunKit, clock objects can be seen live in the console\n'
+            exampleCode.replaceData(
+                exampleCode.data.indexOf(consoleOutputComment, codeRenderLoopOffset),
+                consoleOutputComment.length,
+                'In RunKit, clock objects can be seen live in the console below'
             );
 
             // Helper for extracting source of a function, which allows us to write
@@ -334,7 +337,7 @@ clock.rate *= 2;
                                 result.default = new Proxy(result.default, {
                                     // We enhance the constructor of VirtualClock
                                     construct: (constructorTarget, constructorArgs) => {
-                                        // Open a RunKit endpoint which will be used for updating clcoks via Server-Sent Events
+                                        // Open a RunKit endpoint which will be used for updating clocks via Server-Sent Events
                                         if (!exports.endpoint) {
                                             exports.endpoint = (request, response) => {
                                                 // Unique ID for this response object
