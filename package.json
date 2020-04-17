@@ -1,10 +1,10 @@
 {
   "name": "virtual-clock",
   "version": "1.1.0",
-  "description": "A small library for configurable, high-resolution, high-performance virtual clocks",
+  "description": "A tiny library for configurable virtual clocks",
   "author": "Daniël van de Giessen",
   "license": "MIT",
-  "homepage": "https://github.com/DvdGiessen/virtual-clock#readme",
+  "homepage": "https://dvdgiessen.github.io/virtual-clock/",
   "repository": {
     "type": "git",
     "url": "https://github.com/DvdGiessen/virtual-clock.git"

@@ -4,7 +4,7 @@
  * A configurable virtual clock for tracking time.
  *
  * @author Daniël van de Giessen
- * @see https://github.com/DvdGiessen/virtual-clock#readme
+ * @see https://dvdgiessen.github.io/virtual-clock/
  */
 export default class VirtualClock {
     _now: () => number;

@@ -1,39 +1,46 @@
 # virtual-clock
-*A small library for configurable, high-resolution, high-performance virtual clocks*
 
-[![npm](https://img.shields.io/npm/v/virtual-clock.svg)](https://www.npmjs.com/package/virtual-clock)
-[![license](https://img.shields.io/npm/l/virtual-clock.svg)](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE)
-[![dependencies](https://img.shields.io/david/DvdGiessen/virtual-clock.svg)](https://david-dm.org/DvdGiessen/virtual-clock)
-[![coverage](https://img.shields.io/codecov/c/github/DvdGiessen/virtual-clock/master.svg)](https://codecov.io/gh/DvdGiessen/virtual-clock)
-[![code quality](https://img.shields.io/codacy/grade/bae573f4dab14b01af199ad21c810318/master.svg)](https://www.codacy.com/app/github_94/virtual-clock)
-[![build status](https://img.shields.io/travis/DvdGiessen/virtual-clock/master.svg)](https://travis-ci.org/DvdGiessen/virtual-clock)
+*A tiny library for configurable virtual clocks*
+
+[![npm](https://badgen.net/npm/v/virtual-clock)](https://www.npmjs.com/package/virtual-clock)
+[![license](https://badgen.net/github/license/dvdgiessen/virtual-clock)](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE)
+[![dependencies](https://badgen.net/david/dep/dvdgiessen/virtual-clock)](https://david-dm.org/DvdGiessen/virtual-clock)
+[![coverage](https://badgen.net/codecov/c/github/dvdgiessen/virtual-clock)](https://codecov.io/gh/DvdGiessen/virtual-clock)
+[![code quality](https://badgen.net/codacy/grade/bae573f4dab14b01af199ad21c810318)](https://www.codacy.com/app/github_94/virtual-clock)
+[![build status](https://travis-ci.org/DvdGiessen/virtual-clock.svg?branch=master)](https://travis-ci.org/DvdGiessen/virtual-clock)
 
 ## Overview
-This small and efficient library provides configurable virtual clocks for
-tracking time in for example simulations, games, media applications, or even
-just a simple stopwatch.
 
-Virtual clocks can be started and stopped, the rate at which time flows can be
-altered and even be made negative, causing time to flow backwards. Time can be
-limited by a minimum and maximum value, and when both a minimum and maximum are
-defined time may be set to loop around. Time listeners may be attached which
-will fire when a given (absolute) time on the clock is passed, without having
-to worry about adjusting timeouts for pauses, rate changes or other conditions.
+`virtual-clock` is a tiny library for tracking time, for example in games,
+simulations, visualizations, media applications, or even just a stopwatch app.
 
-`virtual-clock` uses high resolution time data for its virtualized clocks,
-independent of system clock drift (for example when being skewed by software
-like NTP). No timers are used for calculating the virtual clock time, instead
-some clever math is used to calculate time whenever it is requested.
+Virtual clocks can be paused and resumed, be sped up, down, or even made to go
+backwards, can be limited to not go beyond a certain minimum or maximum value,
+or to loop around whenever the set minimum or maximum value is reached.
+
+Clocks can register callbacks which should fire at specific clock times, either
+once or every time the clock reaches the specified time. Event listeners can
+also be attached for specific changes in state, for example to be notified when
+the clock is started or stopped.
+
+A VirtualClock's time is calculated using high resolution time data, meaning
+clock time is not affected by imprecision in JavaScript's timers, system clock
+drift or skewing by software like NTP. This makes it ideal for use in for
+example graphics render loops where the timing should not be bound to the speed
+at which the software runs.
 
 The library has extensive test coverage for all functionality and edge cases,
 provides type annotations for both TypeScript and Flow users, and is fully
 compatible with both browser and Node.js environments.
 
 ## Usage example
+
+Try it live: https://dvdgiessen.github.io/virtual-clock/
+
 ```js
 import VirtualClock from 'virtual-clock';
 // or
-const VirtualClock = require('virtual-clock').default;
+const VirtualClock = require('virtual-clock');
 
 // Create a new clock
 let clock = new VirtualClock;
@@ -92,13 +99,9 @@ clock.rate *= 2;
 ```
 
 ## API
+
 ```js
 class VirtualClock {
-    /**
-     * Returns the current clock time. Alias for the `time` property for compatibility with the Clock interface.
-     */
-    now(): number;
-
     /**
      * Starts running the clock. Does nothing when clock was already running.
      */
@@ -112,7 +115,8 @@ class VirtualClock {
     /**
      * Attaches an event listener.
      *
-     * Supported events: start, stop, settime, setrunning, setrate, setminimum, setmaximum, setloop
+     * Supported events:
+     * start, stop, settime, setrunning, setrate, setminimum, setmaximum, setloop
      */
     on(event: string, callback: () => mixed): VirtualClock;
 
@@ -137,7 +141,8 @@ class VirtualClock {
     alwaysAt(time: number, callback: () => mixed): VirtualClock;
 
     /**
-     * Detaches a previously attached time listener. If multiple listeners match, all are removed.
+     * Detaches a previously attached time listener.
+     * If multiple listeners match, all are removed.
      */
     removeAt(time: number, callback: () => mixed): VirtualClock;
 
@@ -172,9 +177,11 @@ class VirtualClock {
     loop: boolean;
 }
 ```
+
 Note that all methods return the called object to allow for method chaining.
 
 ## Issues and contributing
+
 If you have any issues with `virtual-clock`, first check the [issue tracker](
 https://github.com/DvdGiessen/virtual-clock/issues) to see whether it was
 already reported by someone else. If not, go ahead and [create a new issue](
@@ -185,5 +192,6 @@ If you want to contribute, feel free to open a pull request on [GitHub](
 https://github.com/DvdGiessen/virtual-clock)!
 
 ## License
+
 `virtual-clock` is freely distributable under the terms of the
 [MIT license](https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE).
