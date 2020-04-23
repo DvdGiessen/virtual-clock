@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8" />
-<title>virtual-clock</title>
+<title>virtual-clock.js</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="description" content="A tiny library for configurable virtual clocks"/>
 <meta name="author" content="DvdGiessen"/>
@@ -94,7 +94,7 @@
 <h2>Usage example</h2>
 <code class="runkit" id="example-code">import VirtualClock from &apos;virtual-clock&apos;;
 // or
-const VirtualClock = require(&apos;virtual-clock&apos;).default;
+const VirtualClock = require(&apos;virtual-clock&apos;);
 
 // Create a new clock
 let clock = new VirtualClock;
@@ -332,9 +332,9 @@ clock.rate *= 2;
                     // To do so, we Proxy require() so we can enchance the VirtualClock object once it is loaded
                     require = new Proxy(require, {
                         apply: (target, thisArg, args) => {
-                            const result = target.apply(thisArg, args);
+                            let result = target.apply(thisArg, args);
                             if (args[0] === 'virtual-clock') {
-                                result.default = new Proxy(result.default, {
+                                result = new Proxy(result, {
                                     // We enhance the constructor of VirtualClock
                                     construct: (constructorTarget, constructorArgs) => {
                                         // Open a RunKit endpoint which will be used for updating clocks via Server-Sent Events
@@ -443,9 +443,6 @@ clock.rate *= 2;
                             const script = document.createElement('script');
                             script.async = true;
                             script.onload = () => {
-                                // Alias the loaded virtual-clock
-                                const VirtualClock = window.virtualClock.default;
-
                                 // Store the queue of previously added clocks
                                 const queue = window.virtualClockRenderer.queue;
 
