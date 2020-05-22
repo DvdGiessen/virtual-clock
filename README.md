@@ -35,7 +35,7 @@ compatible with both browser and Node.js environments.
 
 ## Usage example
 
-Try it live: https://dvdgiessen.github.io/virtual-clock/
+Try it live: https://virtual-clock.js.org/
 
 ```js
 import VirtualClock from 'virtual-clock';

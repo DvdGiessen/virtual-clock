@@ -4,7 +4,7 @@ export default VirtualClock;
  * A configurable virtual clock for tracking time.
  *
  * @author Daniël van de Giessen
- * @see https://dvdgiessen.github.io/virtual-clock/
+ * @see https://virtual-clock.js.org/
  */
 export declare class VirtualClock {
     /**

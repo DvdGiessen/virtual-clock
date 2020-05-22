@@ -4,7 +4,7 @@
   "description": "A tiny library for configurable virtual clocks",
   "author": "Daniël van de Giessen",
   "license": "MIT",
-  "homepage": "https://dvdgiessen.github.io/virtual-clock/",
+  "homepage": "https://virtual-clock.js.org/",
   "repository": {
     "type": "git",
     "url": "https://github.com/DvdGiessen/virtual-clock.git"
