@@ -1,6 +1,6 @@
 {
   "name": "virtual-clock",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A tiny library for configurable virtual clocks",
   "author": "Daniël van de Giessen",
   "license": "MIT",
