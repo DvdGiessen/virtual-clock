@@ -7,17 +7,17 @@
  * @see https://virtual-clock.js.org/
  */
 export default class VirtualClock {
-    _now: () => number;
-    _previousTime: number;
-    _previousNow: number;
-    _rate: number;
-    _running: boolean;
-    _minimum: number;
-    _maximum: number;
-    _loop: boolean;
-    _eventListeners: Map<string, (() => mixed)[]>;
-    _timeListeners: Map<[number, () => mixed], [TimeoutID, number, boolean]>;
-    _nullTimeoutID: TimeoutID;
+    declare _now: () => number;
+    declare _previousTime: number;
+    declare _previousNow: number;
+    declare _rate: number;
+    declare _running: boolean;
+    declare _minimum: number;
+    declare _maximum: number;
+    declare _loop: boolean;
+    declare _eventListeners: Map<string, (() => mixed)[]>;
+    declare _timeListeners: Map<[number, () => mixed], [TimeoutID, number, boolean]>;
+    declare _nullTimeoutID: TimeoutID;
 
     /**
      * Constructs a stopped clock with default settings.

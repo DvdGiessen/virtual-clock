@@ -4,7 +4,9 @@ module.exports = function(api) {
     return {
         "presets": [
             "@babel/preset-env",
-            "@babel/preset-flow"
+            ["@babel/preset-flow", {
+                "allowDeclareFields": true
+            }]
         ],
         "env": {
             "test": {
