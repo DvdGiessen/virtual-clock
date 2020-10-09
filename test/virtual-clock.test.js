@@ -597,6 +597,25 @@ suite('VirtualClock', () => {
             fakeTime.tick(1);
             assert(callback.calledOnce);
         });
+        test('Attaching single-fire time listener more than 2^31-1 milliseconds in the future causes it to fire after the specified time', () => {
+            const callbackOne = sinon.spy();
+            const callbackTwo = sinon.spy();
+            clock.onceAt(0x7fffffff + 5000, callbackOne);
+            clock.onceAt(10 * 0x7fffffff + 5001, callbackTwo);
+            clock.start();
+            fakeTime.tick(0x7fffffff + 4999);
+            assert(!callbackOne.called);
+            assert(!callbackTwo.called);
+            fakeTime.tick(1);
+            assert(callbackOne.calledOnce);
+            assert(!callbackTwo.called);
+            fakeTime.tick(9 * 0x7fffffff);
+            assert(callbackOne.calledOnce);
+            assert(!callbackTwo.called);
+            fakeTime.tick(1);
+            assert(callbackOne.calledOnce);
+            assert(callbackTwo.calledOnce);
+        });
         test('Single-fire time listener can only be bound to a finite time', () => {
             const callback = sinon.spy();
             assert.throws(() => {
@@ -777,6 +796,25 @@ suite('VirtualClock', () => {
             fakeTime.tick(199);
             assert(!callbackTwo.called);
             fakeTime.tick(1);
+            assert(callbackTwo.calledOnce);
+        });
+        test('Attaching always-fire time listener more than 2^31-1 milliseconds in the future causes it to fire after the specified time', () => {
+            const callbackOne = sinon.spy();
+            const callbackTwo = sinon.spy();
+            clock.alwaysAt(0x7fffffff + 5000, callbackOne);
+            clock.alwaysAt(10 * 0x7fffffff + 5001, callbackTwo);
+            clock.start();
+            fakeTime.tick(0x7fffffff + 4999);
+            assert(!callbackOne.called);
+            assert(!callbackTwo.called);
+            fakeTime.tick(1);
+            assert(callbackOne.calledOnce);
+            assert(!callbackTwo.called);
+            fakeTime.tick(9 * 0x7fffffff);
+            assert(callbackOne.calledOnce);
+            assert(!callbackTwo.called);
+            fakeTime.tick(1);
+            assert(callbackOne.calledOnce);
             assert(callbackTwo.calledOnce);
         });
         test('Always-fire time listener can only be bound to a finite time', () => {

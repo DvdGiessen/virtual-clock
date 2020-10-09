@@ -221,24 +221,39 @@ export default class VirtualClock {
                         // Ceil the value, otherwise setTimeout may floor it and run before it is supposed to
                         until = Math.ceil(until);
 
-                        // Set timeout
-                        this._timeListeners.set(listener, [setTimeout(() => {
-                            // Should we self-destruct
-                            if (once) {
-                                this._timeListeners.delete(listener);
-                            } else {
-                                // Save time of call
-                                this._timeListeners.set(listener, [this._nullTimeoutID, this.time, once]);
-                            }
+                        // Workaround: many common JavaScript engines internally use a 32-bit signed integer
+                        // to save the `delay` parameter of `setTimeout`. Integer overflows may cause the
+                        // callback to be executed prematurely, thus we work around this by instead scheduling
+                        // a recalculation before this overflow value is reached.
+                        let newTimeoutID;
+                        if (until > 0x7fffffff) {
+                            const untilRecalculate = Math.min(Math.ceil(until / 2), 0x7fffffff);
+                            newTimeoutID = setTimeout(
+                                () => this._recalculateTimeListener(listener),
+                                untilRecalculate
+                            );
+                        } else {
+                            newTimeoutID = setTimeout(() => {
+                                // Should we self-destruct
+                                if (once) {
+                                    this._timeListeners.delete(listener);
+                                } else {
+                                    // Save time of call
+                                    this._timeListeners.set(listener, [this._nullTimeoutID, this.time, once]);
+                                }
 
-                            // Call the callback
-                            callback.call(this);
+                                // Call the callback
+                                callback.call(this);
 
-                            // Recalculate the time listener
-                            if (!once) {
-                                this._recalculateTimeListener(listener);
-                            }
-                        }, until), NaN, once]);
+                                // Recalculate the time listener
+                                if (!once) {
+                                    this._recalculateTimeListener(listener);
+                                }
+                            }, until);
+                        }
+
+                        // Save recalculated time listener details
+                        this._timeListeners.set(listener, [newTimeoutID, NaN, once]);
                     }
                 }
             }
