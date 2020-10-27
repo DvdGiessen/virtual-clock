@@ -1,4 +1,5 @@
 // @flow
+/// <reference types="./virtual-clock.d.ts" />
 
 /**
  * A configurable virtual clock for tracking time.
@@ -264,9 +265,9 @@ export default class VirtualClock {
      * Attaches a time listener which fires once after the specified clock time has passed.
      */
     onceAt(time: number, callback: () => mixed): VirtualClock {
-        // Do not allow setting an invalid value
+        // Do not allow attaching to an invalid time value
         if (isNaN(time) || time === -Infinity || time === Infinity) {
-            throw new Error('Can only set time to a finite number');
+            throw new Error('Time passed to onceAt must be a finite number');
         }
 
         const listener = [time, callback];
@@ -281,9 +282,9 @@ export default class VirtualClock {
      * Attaches a time listener which fires every time the specified clock time has passed.
      */
     alwaysAt(time: number, callback: () => mixed): VirtualClock {
-        // Do not allow setting an invalid value
+        // Do not allow attaching to an invalid time value
         if (isNaN(time) || time === -Infinity || time === Infinity) {
-            throw new Error('Can only set time to a finite number');
+            throw new Error('Time passed to alwaysAt must be a finite number');
         }
 
         const listener = [time, callback];
