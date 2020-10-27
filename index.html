@@ -88,13 +88,15 @@
 <p>
     The library has extensive test coverage for all functionality and edge cases,
     provides type annotations for both TypeScript and Flow users, and is fully
-    compatible with both browser and Node.js environments.
+    compatible with browsers, Node.js, and Deno environments.
 </p>
 
 <h2>Usage example</h2>
 <code class="runkit" id="example-code">import VirtualClock from &apos;virtual-clock&apos;;
 // or
 const VirtualClock = require(&apos;virtual-clock&apos;);
+// or
+import VirtualClock from 'https://virtual-clock.js.org/1.2.3/virtual-clock.mjs';
 
 // Create a new clock
 let clock = new VirtualClock;
@@ -290,7 +292,9 @@ clock.rate *= 2;
 
         // RunKit doesn't support the "import" syntax, so we comment it out
         const exampleCode = clonedElement.childNodes.item(0);
-        exampleCode.insertData(exampleCode.data.indexOf('import'), '// ');
+        const importOffset = exampleCode.data.indexOf('import');
+        exampleCode.insertData(exampleCode.data.indexOf('import', importOffset + 1), '// ');
+        exampleCode.insertData(importOffset, '// ');
 
         // The render loop should be adjusted for Node.js
         const codeRenderLoopOffset = exampleCode.data.indexOf('let outputElement')
