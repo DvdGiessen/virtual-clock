@@ -42,7 +42,7 @@ import VirtualClock from 'virtual-clock';
 // or
 const VirtualClock = require('virtual-clock');
 // or
-import VirtualClock from 'https://virtual-clock.js.org/1.2.2/virtual-clock.mjs';
+import VirtualClock from 'https://virtual-clock.js.org/1.2.3/virtual-clock.mjs';
 
 // Create a new clock
 let clock = new VirtualClock;
