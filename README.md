@@ -31,7 +31,7 @@ at which the software runs.
 
 The library has extensive test coverage for all functionality and edge cases,
 provides type annotations for both TypeScript and Flow users, and is fully
-compatible with both browser and Node.js environments.
+compatible with browsers, Node.js, and Deno environments.
 
 ## Usage example
 
@@ -41,6 +41,8 @@ Try it live: https://virtual-clock.js.org/
 import VirtualClock from 'virtual-clock';
 // or
 const VirtualClock = require('virtual-clock');
+// or
+import VirtualClock from 'https://virtual-clock.js.org/1.2.2/virtual-clock.mjs';
 
 // Create a new clock
 let clock = new VirtualClock;
