@@ -1,9 +1,9 @@
 language: node_js
 node_js:
-  - "10"
+  - "node"
+  - "lts/*"
   - "12"
-  - "14"
-sudo: false
+  - "10"
 install:
   - npm install -g codecov
   - npm install
