@@ -250,11 +250,12 @@ clock.rate *= 2;
     <a href="https://github.com/DvdGiessen/virtual-clock/blob/master/LICENSE">MIT license</a>.
 </p>
 <!-- The following scripts are all for the RunKit integration. -->
-<script id="script-pako" src="https://unpkg.com/pako/dist/pako.min.js" defer></script>
+<script id="script-pako" src="https://unpkg.com/pako/dist/pako_deflate.es5.min.js" defer></script>
+<script id="script-base64" type="module" src="https://unpkg.com/byte-base64/lib.es6.js"></script>
 <script id="script-runkit" src="https://embed.runkit.com" defer></script>
-<script>
+<script type="module">
     // Progressive enhancement: All this code is only executed if the RunKit JavaScript actually loads
-    document.getElementById('script-runkit').addEventListener('load', function() {
+    if (window.RunKit) (async () => {
         // Create a clone of the example code which will be enhanced by RunKit
         const originalElement = document.getElementById('example-code');
         const clonedElement = originalElement.cloneNode(true);
@@ -499,13 +500,14 @@ clock.rate *= 2;
             );
 
             // Compress the preamble since RunKit breaks when its too big
+            const { bytesToBase64 } = await import('https://unpkg.com/byte-base64/lib.es6.js');
             preamble = getFunctionSource(() => {
                 eval(require('zlib').inflateSync(Buffer.from(__source__, 'base64')).toString('ascii'));
-            }).replace('__source__', JSON.stringify(btoa(window.pako.deflate(preamble, { to: 'string' }))));
+            }).replace('__source__', JSON.stringify(bytesToBase64(window.pako.deflate(preamble))));
         }
 
         // Build the Runkit workbook using all the things we've prepared
-        RunKit.createNotebook({
+        window.RunKit.createNotebook({
             element: clonedElement,
             source: clonedElement.textContent,
             clearParentContents: true,
@@ -513,7 +515,8 @@ clock.rate *= 2;
             onLoad: window.activateRunkitExampleCode,
             nodeVersion: '*',
         });
-    });
+
+    })();
 </script>
 </body>
 </html>
