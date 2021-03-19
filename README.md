@@ -60,8 +60,11 @@ let outputElement = document.getElementById('output');
 // Start the clock by calling .start()
 clock.start();
 
-// Or toggling the `running` property
-clock.running = true;
+// Stop the clock by calling .stop()
+clock.stop();
+
+// Or toggle the `running` property
+clock.running = !clock.running;
 
 // Speed up the the flow of time
 clock.rate = 2.0;
